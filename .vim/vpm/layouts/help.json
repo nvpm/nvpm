@@ -1,0 +1,64 @@
+{ 'name' : 'Vim Help',
+  'last' : '0',
+  'tl'   : [
+
+    { 'name' : 'General',
+      'last' : '0',
+      'bl'   : [
+
+        { 'name' : 'map',
+          'path' : '/usr/share/nvim/runtime/doc/map.txt'
+        },
+        { 'name' : 'options',
+          'path' : '/usr/share/nvim/runtime/doc/options.txt'
+        },
+        { 'name' : 'windows',
+          'path' : '/usr/share/nvim/runtime/doc/windows.txt'
+        },
+        { 'name' : 'autocmd',
+          'path' : '/usr/share/nvim/runtime/doc/autocmd.txt'
+        },
+        { 'name' : 'tabpage',
+          'path' : '/usr/share/nvim/runtime/doc/tabpage.txt'
+        },
+        { 'name' : 'terminal',
+          'path' : '/usr/share/nvim/runtime/doc/nvim_terminal_emulator.txt'
+        },
+
+      ]
+    },
+    { 'name' : 'Vim Language',
+      'last' : '0',
+      'bl'   : [
+
+        { 'name' : 'eval.txt',
+          'path' : '/usr/share/nvim/runtime/doc/eval.txt'
+        },
+        { 'name' : 'usr_41.txt',
+          'path' : '/usr/share/nvim/runtime/doc/usr_41.txt'
+        },
+
+      ]
+    },
+    { 'name' : 'Plugins',
+      'last' : '0',
+      'bl'   : [
+
+        { 'name' : 'Deoplete',
+          'path' : '/i/conf/config/nvim/plugged/deoplete.nvim/doc/deoplete.txt'
+        },
+        { 'name' : 'Tagbar',
+          'path' : '/i/conf/config/nvim/plugged/tagbar/doc/tagbar.txt'
+        },
+        { 'name' : 'Neomake',
+          'path' : '/i/conf/config/nvim/plugged/neomake/doc/neomake.txt'
+        },
+        { 'name' : 'NeoSnippets',
+          'path' : '/i/conf/config/nvim/plugged/neosnippet.vim/doc/neosnippet.txt'
+        },
+
+      ]
+    },
+
+  ]
+}

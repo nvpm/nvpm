@@ -1,0 +1,14 @@
+{ 'name': 'Menu',
+  'last': 0 ,
+  'tl': [
+  
+    { 'name':'Menu VPM',
+      'last':0,
+      'bl':[
+        {'name':'Menu','path':'menu.vpm'},
+        {'name':'Json','path':'menu.json'},
+      ]
+    },
+  
+  ]
+}
