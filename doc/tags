@@ -1,4 +1,3 @@
-.nvpm/proj/	nvpm.txt	/*.nvpm\/proj\/*
 g:nvpm_line_bottomcenter	nvpm.txt	/*g:nvpm_line_bottomcenter*
 g:nvpm_line_bottomright	nvpm.txt	/*g:nvpm_line_bottomright*
 g:nvpm_line_closure	nvpm.txt	/*g:nvpm_line_closure*
@@ -20,12 +19,10 @@ nvpm-NVPMPrev	nvpm.txt	/*nvpm-NVPMPrev*
 nvpm-NVPMSaveDefaultProject	nvpm.txt	/*nvpm-NVPMSaveDefaultProject*
 nvpm-NVPMTerminal	nvpm.txt	/*nvpm-NVPMTerminal*
 nvpm-NVPMVersion	nvpm.txt	/*nvpm-NVPMVersion*
-nvpm-autocommands	nvpm.txt	/*nvpm-autocommands*
 nvpm-buff	nvpm.txt	/*nvpm-buff*
 nvpm-bugs	nvpm.txt	/*nvpm-bugs*
 nvpm-commands	nvpm.txt	/*nvpm-commands*
 nvpm-configuration	nvpm.txt	/*nvpm-configuration*
-nvpm-context	nvpm.txt	/*nvpm-context*
 nvpm-group	nvpm.txt	/*nvpm-group*
 nvpm-installation	nvpm.txt	/*nvpm-installation*
 nvpm-intro	nvpm.txt	/*nvpm-intro*
