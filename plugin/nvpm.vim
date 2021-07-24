@@ -527,8 +527,8 @@ function! g:nvpm.line.init() "{
   let self.projname     = get(g: , 'nvpm_line_show_projname' , 0    )
   let self.gitinfo      = get(g: , 'nvpm_line_git_info'      , 0    )
   let self.gitdelayms   = get(g: , 'nvpm_line_git_delayms'   , 2000 )
-  if !self.gitinfo|return|endif
-  call timer_start(self.gitdelayms,'nvpm#gittimer',{'repeat':-1})
+  let self.gittimer     = 0
+
 endfunction "}
 function! g:nvpm.line.topl() "{
 
@@ -600,33 +600,12 @@ function! g:nvpm.line.botl() "{
 
 endfunction
 " }
-function! nvpm#gittimer(timer)  "{
-  let info  = ''
-  if g:nvpm.line.gitinfo && executable('git')
-    let branch   = trim(system('git rev-parse --abbrev-ref HEAD'))
-    if empty(branch)|return ''|endif
-    let modified = !empty(trim(system('git diff HEAD --shortstat')))
-    let staged   = !empty(trim(system('git diff --no-ext-diff --cached --shortstat')))
-    let cr = ''
-    let char = ''
-    let s = ' '
-    if empty(matchstr(branch,'fatal: not a git repository'))
-      let cr   = '%#NVPMLineGitClean#'
-      if modified
-        let cr    = '%#NVPMLineGitModified#'
-        let char  = ' [M]'
-      endif
-      if staged
-        let cr   = '%#NVPMLineGitStaged#'
-        let char = ' [S]'
-      endif
-      let info = cr .' ' . branch . char
-    endif
-  endif
-  let g:nvpm.line.git = info
-endfunction
-" }
 function! g:nvpm.line.show() "{
+
+  if self.gitinfo && !self.gittimer
+    let self.gittimer = timer_start(self.gitdelayms,
+          \'NVPMGITTIMER',{'repeat':-1})
+  endif
 
   " NOTE: Don't put spaces!
   set tabline=%!g:nvpm.line.topl()
@@ -653,6 +632,32 @@ function! g:nvpm.line.swap() "{
     call self.show()
   endif
 
+endfunction
+" }
+function! NVPMGITTIMER(timer) "{
+  let info  = ''
+  if g:nvpm.line.gitinfo && executable('git')
+    let branch   = trim(system('git rev-parse --abbrev-ref HEAD'))
+    if empty(branch)|return ''|endif
+    let modified = !empty(trim(system('git diff HEAD --shortstat')))
+    let staged   = !empty(trim(system('git diff --no-ext-diff --cached --shortstat')))
+    let cr = ''
+    let char = ''
+    let s = ' '
+    if empty(matchstr(branch,'fatal: not a git repository'))
+      let cr   = '%#NVPMLineGitClean#'
+      if modified
+        let cr    = '%#NVPMLineGitModified#'
+        let char  = ' [M]'
+      endif
+      if staged
+        let cr   = '%#NVPMLineGitStaged#'
+        let char = ' [S]'
+      endif
+      let info = cr .' ' . branch . char
+    endif
+  endif
+  let g:nvpm.line.git = info
 endfunction
 " }
 
