@@ -1,0 +1,111 @@
+
+
+
+
+curl --header 'Content-Type: application/json' --header "PRIVATE-TOKEN: <your_access_token>" \
+     --data '{ "name": "New release", "tag_name": "v0.3", "description": "Super nice release", "milestones": ["v1.0", "v1.0-rc"], "assets": { "links": [{ "name": "hoge", "url": "https://google.com", "filepath": "/binaries/linux-amd64", "link_type":"other" }] } }' \
+     --request POST "https://gitlab.example.com/api/v4/projects/24/releases"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function! g:nvpm.line.init() "{
+
+  let botr = '%y%m ┅ %l,%c/%P'
+  let botc = ' ┅ %f'
+  let self.visible      = 0
+  let self.bottomcenter = get(g: , 'nvpm_line_bottomcenter'  , botc )
+  let self.bottomright  = get(g: , 'nvpm_line_bottomright'   , botr )
+  let self.closure      = get(g: , 'nvpm_line_closure'       , 1    )
+  let self.innerspace   = get(g: , 'nvpm_line_innerspace'    , 0    )
+  let self.projname     = get(g: , 'nvpm_line_show_projname' , 0    )
+
+endfunction "}
+function! g:nvpm.line.topl() "{
+
+  let space = self.innerspace ? ' ' : ''
+  let line  = ''
+  " " let line .= '%#NVPMLineWksp#'
+  " let line .= self.closure ? '('.space : ' '
+  " let line .= g:nvpm.data.curr.item('w').name
+  " let line .= self.closure ? ')'.space : ' '
+  " let line .= ' '
+
+  let currtab = g:nvpm.data.curr.item('t')
+
+  for tab in g:nvpm.data.curr.list('t')
+    let iscurr = tab.name == currtab.name
+    let line  .= '%#NVPMLineTabs'
+    let line  .= iscurr ? 'Sel#' : '#'
+    let line  .= self.closure && iscurr ? '['.space : ' '.space
+    let line  .= tab.name
+    let line  .= self.closure && iscurr ? space.']' : ' '.space
+  endfor
+
+  let line .= '%#NVPMLineTabsFill#'
+
+  let currwksp = g:nvpm.data.curr.item('w')
+
+  let i = 0
+  let workspaces = g:nvpm.data.curr.list('w')
+  let w = []
+  for i in range(g:nvpm.data.curr.leng('w'))
+    let wksp = workspaces[i]
+    let iscurr = wksp.name == currwksp.name
+    let l:right = ''
+    let l:right .= '%#NVPMLineWksp'
+    let l:right .= iscurr ? 'Sel#' : '#'
+    let l:right .= self.closure && iscurr ? '['.space : ' '.space
+    let l:right .= wksp.name
+    let l:right .= self.closure && iscurr ? space.']' : ' '.space
+    call add(w,l:right)
+  endfor
+
+  let line .= '%='
+  let line .= join(reverse(w),'')
+  " let line .= self.topright
+
+  let proj  = split(g:nvpm.data.path,g:nvpm.dirs.path('proj'))[0]
+  let proj  = '%#NVPMLineProjSel#'.' '.proj.' '
+  let line .= self.projname ? proj : ''
+
+  return line
+
+endfunction
+" }
+function! g:nvpm.line.botl() "{
+  let space = self.innerspace ? ' ' : ''
+  let line  = ''
+
+  let currbuf = g:nvpm.data.curr.item('b')
+
+  for buf in g:nvpm.data.curr.list('b')
+    let iscurr = buf.name == currbuf.name
+    let line  .= '%#NVPMLineBuff'
+    let line  .= iscurr ? 'Sel#' : '#'
+    let line  .= self.closure && iscurr ? '['.space : ' '.space
+    let line  .= buf.name
+    let line  .= self.closure && iscurr ? space.']' : ' '.space
+  endfor
+
+  let line .= '%#NVPMLinebuffFill#'
+  let line .= self.bottomcenter
+  let line .= '%='
+  let line .= self.bottomright
+
+  return line
+
+endfunction
+" }

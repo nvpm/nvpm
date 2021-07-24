@@ -1,0 +1,1164 @@
+*nvpm.txt*                                            Project Manager for Neovim
+╭──────────────────────────────────────────╮
+│ ███    ██  ██    ██  ██████   ███    ███ │
+│ ████   ██  ██    ██  ██   ██  ████  ████ │
+│ ██ ██  ██  ██    ██  ██████   ██ ████ ██ │
+│ ██  ██ ██   ██  ██   ██       ██  ██  ██ │
+│ ██   ████    ████    ██       ██      ██ │
+╰──────────────────────────────────────────╯ Made in Brazil
+CREATOR                                                         Itamar Soares  {
+
+                                                                   iasj@pm.me
+                                                      https://gitlab.com/iasj
+====================================}===========================================
+NVPM Group                                                        *nvpm-group* {
+
+-> https://gitlab.com/nvpm
+-> https://t.me/nvpmuser
+-> https://t.me/nvpmnews
+====================================}=========================================
+CONTENTS                                                                *nvpm* {
+ 0. Quick Start                                               nvpm-quick-start
+ 1. Installation                                             nvpm-installation
+ 2. Introduction                                                    nvpm-intro
+ 3. NVPM Language                                         nvpm-markup-language
+ 4. NVPM Usage                                                      nvpm-usage
+ 5. Commands                                                     nvpm-commands
+ 6. Mappings                                                     nvpm-mappings
+ 7. Configuration                                           nvpm-configuration
+ 8. Buglist                                                          nvpm-bugs
+====================================}=========================================
+ 0. Quick Start                                             *nvpm-quick-start* {
+
+  I'm  not  sure  how  you will want to configure NVPM, but the following have
+  been known to work well  for  several users. They are kind of an agreed upon
+  settings. Most of them are already with their default values. Just drop them
+  into your `init.vim` and you should be good to go!
+
+--- FROM HERE
+
+    set termguicolors
+    set hidden
+    set showtabline=2
+    set laststatus=2
+
+    " Project options
+    let g:nvpm_new_project_edit_mode = 1
+    let g:nvpm_load_new_project      = 1
+
+    " directory tree
+    let g:nvpm_maketree = 1
+
+    " Line options for use with colors
+    let g:nvpm_line_closure       = 0
+    let g:nvpm_line_innerspace    = 0
+    let g:nvpm_line_show_projname = 1
+    let g:nvpm_line_bottomright   = '%y%m ⬤ %l,%c/%P'
+    let g:nvpm_line_bottomcenter  = ' ⬤ %f'
+    let g:nvpm_line_git_info      = 1
+    let g:nvpm_line_git_delayms   = 1000
+
+    " Git Info Colors
+    hi NVPMLineGitModified guifg=#ff0000 gui=bold
+    hi NVPMLineGitStaged   guifg=#00ff00 gui=bold
+    hi NVPMLineGitClean    guifg=#77aaaa gui=bold
+
+    " Tab Colors
+    hi NVPMLineTabs     guifg=#777777 gui=bold
+    hi NVPMLineTabsSel  guibg=#337a8a guifg=#ffffff gui=bold
+    hi NVPMLineTabsFill guibg=none
+    " Buffer Colors
+    hi link NVPMLineBuff     NVPMLineTabs
+    hi link NVPMLineBuffSel  NVPMLineTabsSel
+    hi link NVPMLineBuffFill NVPMLineTabsFill
+    " Workspace Colors
+    hi link NVPMLineWksp     NVPMLineTabs
+    hi link NVPMLineWkspSel  NVPMLineTabsSel
+    " Project File Name Colors
+    hi NVPMLineProjSel   guifg=#000000 guibg=#00ffff
+
+    nmap <silent><space>  :NVPMNext buffer<cr>
+    nmap <silent>m<space> :NVPMPrev buffer<cr>
+    nmap <silent><tab>    :NVPMNext tab<cr>
+    nmap <silent>m<tab>   :NVPMPrev tab<cr>
+    nmap <silent><c-n>    :NVPMNext workspace<cr>
+    nmap <silent><BS>     :NVPMNext workspace<cr>
+    nmap <silent><c-p>    :NVPMPrev workspace<cr>
+    nmap <F7>             :NVPMLoadProject<space>
+    nmap <F8>             :w<cr>:NVPMEditProjects<cr>
+    imap <F8>        <esc>:w<cr>:NVPMEditProjects<cr>
+    nmap <F9>             :NVPMSaveDefaultProject<space>
+    nmap <F10>            :NVPMNewProject<space>
+    nmap mt               :NVPMTerminal<cr>
+    nmap ml               :call g:nvpm.line.swap()<cr>
+
+--- UNTIL HERE
+
+  These mappings will translate into:
+
+    <space>    : will go to the next buffer
+    m<space>   : will go to the previous buffer
+    <tab>      : will go to the next tab
+    m<tab>     : will go to the previous tab
+    control+n  : will go to the next workspace
+    <backspace>: will go to the next workspace (same as above)
+    control+p  : will go to the previous workspace
+    <F7>       : will load a project file
+    <F8>       : will save the current buffer and open the edit projects
+                 environment. This will work for both insert and normal
+                 modes.
+    <F9>       : will save a default project file
+    <F10>      : will create a new project file
+    mt         : will open the NVPM Terminal
+    ml         : will toggle the status and tab lines in and out
+
+For more info on these settings, please see:
+
+:help nvpm-mappings
+:help nvpm-configuration
+
+
+====================================}=========================================
+ 1. Installation                                           *nvpm-installation* {
+
+using |vim-plug|
+>
+    Plug 'https://gitlab.com/nvpm/nvpm' , {'branch' : 'main'}
+
+using |runtimepath|
+>
+    cd $HOME
+    git clone https://gitlab.com/nvpm/nvpm
+    echo "set runtimepath+=~/nvpm" >> .config/nvim/init.vim
+
+copying files with |bash|
+>
+    cd $HOME
+    git clone https://gitlab.com/nvpm/nvpm
+    cp -r nvpm/{plugin,syntax,version} .config/nvim
+    mkdir -p .config/nvim/doc
+    cp  nvpm/doc/nvpm.txt .config/nvim/doc
+    touch .config/nvim/doc/tags
+    cat nvpm/doc/tags >> .config/nvim/doc/tags
+
+Note. The following settings are `STRONGLY RECOMMENDED` after you install NVPM:
+>
+    set hidden
+    set showtabline=2
+    set laststatus=2
+
+====================================}=========================================
+ 2. Introduction                                                  *nvpm-intro* {
+
+  NVPM  stands  for Neovim Project Manager. It's mission is to assist the user
+  on managing large  quantities  of  files in any project. The main goal is to
+  create a tree-like structure in order  to overcome the linearity of Neovim's
+  bufferlist.
+
+  For  small projects, Neovim's bufferlist will do just fine. You can open all
+  the files  in  different  tabs  and move around with  ease. The problem only
+  appears  when you increase the number  of  files  and  directories  in  your
+  project.
+
+  To  exemplify this, we can simulate the creation of a project. For exemple a
+  C Library  that  handles  geometric calculations called LibGeo. This project
+  may start small, say:
+
+  $tree ~/libgeo/
+  libgeo/
+  ├── main.c
+  └── readme.txt
+
+  0 directories, 2 files
+
+  In  such  cases,  the  user  can  open  each  file  at  a time and edit them
+  separately.  But  very  soon the situation can change into separate  modules
+  for the library.  Say:
+
+
+  tree ~/libgeo/
+
+  libgeo/
+  ├── main.c
+  ├── readme.txt
+  └── src
+      ├── line.c
+      ├── line.h
+      ├── plane.c
+      ├── plane.h
+      ├── point.c
+      └── point.h
+
+  1 directory, 8 files
+
+  And  it  can  always  get  uglier! The user may want to make separate tests,
+  assisted by a Makefile. Also,  as  soon  as  the modules increase in number,
+  more hierarchies may be necessary.
+
+  And  what  about creating a git repository, a documentation folder, install,
+  uninstall and  helper  scripts.  Well, very quickly, the user might face the
+  following structure of files:
+
+
+  tree -a libgeo/
+
+  libgeo/
+  ├── bin
+  ├── doc
+  │   ├── libgeo-dev.txt
+  │   └── libgeo.txt
+  ├── .gitignore
+  ├── lib
+  ├── Makefile
+  ├── readme.txt
+  ├── scripts
+  │   ├── helper.sh
+  │   ├── install.sh
+  │   └── uninstall.sh
+  ├── src
+  │   ├── common.h
+  │   ├── data
+  │   │   ├── list.c
+  │   │   ├── list.h
+  │   │   ├── string.c
+  │   │   ├── string.h
+  │   │   ├── tree.c
+  │   │   └── tree.h
+  │   ├── main.c
+  │   ├── math
+  │   │   ├── complex.c
+  │   │   ├── complex.h
+  │   │   ├── matrix.c
+  │   │   ├── matrix.h
+  │   │   ├── real.c
+  │   │   ├── real.h
+  │   │   ├── vector.c
+  │   │   └── vector.h
+  │   └── shapes
+  │       ├── line.c
+  │       ├── line.h
+  │       ├── plane.c
+  │       ├── plane.h
+  │       ├── point.c
+  │       └── point.h
+  └── test
+      ├── common.h
+      ├── data
+      │   ├── list.c
+      │   ├── list.h
+      │   ├── string.c
+      │   ├── string.h
+      │   ├── tree.c
+      │   └── tree.h
+      ├── main.c
+      ├── math
+      │   ├── complex.c
+      │   ├── complex.h
+      │   ├── matrix.c
+      │   ├── matrix.h
+      │   ├── real.c
+      │   ├── real.h
+      │   ├── vector.c
+      │   └── vector.h
+      └── shapes
+          ├── line.c
+          ├── line.h
+          ├── plane.c
+          ├── plane.h
+          ├── point.c
+          └── point.h
+
+  12 directories, 52 files
+
+  Well  how  about  that?  Not  only  we have many more files and directories,
+  divided into folders and subfolders, but also different categories of files.
+  If the user tries to open them all, only  one  instance  of  Neovim won't be
+  enough to keep track of them.
+
+====================================}=========================================
+ 4. NVPM Language                                       *nvpm-markup-language* {
+
+  NVPM  Markup  Language was designed in such a way to facilitate the creation
+  of workspaces. Workspace means a space that you can work with/on/in.
+
+  The  language  is  written  in what is defined as project files. Those files
+  store a list of workspaces, written by the user, using NVPM Markup Language.
+  The  user  may write as many project  files  as  necessary.  No  limits  was
+  imposed. Normally,  only  one project file may be enough for small to medium
+  sized projects.
+
+  The  project  files  will have information regarding the meta-information of
+  each project. Meta-information  is  all the information that is not (may not
+  be) stored inside the files themselves (not the code). As an example:
+
+  - the name of each file
+  - the name of each directory
+  - specific concepts about the files/software
+  - or basically anything the user deems necessary
+
+  What  NVPM  will  do  with  this meta-information is to read and apply actions
+  accordingly, such as:
+
+  - opening files
+  - opening terminals
+  - building tab and status lines
+  - boring stuff the user may not wanna know
+
+  Note. There is no other way to use NVPM but by creating at least one project
+  file.  If  the  user  wants to use it, make sure to fully read this document
+  first.
+
+4.1 Location of Project Files                               *nvpm-project-files*
+-----------------------------
+
+  By default, NVPM searches for project files inside the folder ".nvpm/proj/".
+  The user may change this default location with the following variable:
+
+    g:nvpm_local_dir
+
+  see |g:nvpm_local_dir|
+
+  This folder must be embeded with each project. So in our LibGeo example:
+
+  - project's location: "~/libgeo/"
+  - then the folder "~/libgeo/.nvpm/proj/" must exist!
+
+  see |nvpm-NVPMNewProject|
+
+  Some  plugins  use  a hidden ".vim" folder to store sensible information. In
+  such cases (or for no  reason  at  all),  the  user  may  want to change the
+  default location for the local directory, say:
+
+  let g:nvpm_local_dir = '.vim/nvpm'
+
+4.2 NVPM Markup Lang Reserved Keywords           *nvpm-markup-language-keywords*
+----------------------------------------
+
+  NVPM Markup Language is having only four keywords:
+
+    workspace
+    tab
+    buff
+    term
+
+  workspace: receives a name                                    *nvpm-workspace*
+  --------------------------
+
+    Syntax  : workspace <workspace-name>
+    Examples:
+      workspace Code
+      workspace Docs
+      workspace LibGeo Code
+      workspace LibGeo Scripts
+
+  tab: receives a name                                                *nvpm-tab*
+  --------------------
+
+    Syntax  : tab <tab-name>
+    Examples:
+      tab Main
+      tab Doc
+
+  buff: receives a name and a path                                   *nvpm-buff*
+  --------------------------------
+
+    Syntax  : buff <buffer-name> : /path/to/file
+    Examples:
+      buff main : src/main.c
+      buff make : Makefile
+      buff vnit : ~/.config/nvim/init.vim
+
+  term: receives a name and an optional command                      *nvpm-term*
+  ---------------------------------------------
+
+    Syntax  : term <terminal-name> : [<command>]
+    Examples:
+      term home :         <-- $SHELL by default
+      term home : bash    <-- calling bash
+      term tree : ranger
+
+  Notes.  The  user  can  put  `spaces`  and  tab characters before any of the
+  keywords and around  the character `":"`. The names may have spaces as well.
+
+4.3 NVPM Markup Lang Complete Examples           *nvpm-markup-language-examples*
+--------------------------------------
+
+  Let's  create  some project files for our fictitious LibGeo library from the
+  introduction.
+
+  <1st-example> Small LibGeo                                      small-libgeo
+
+    ╭───────────────────────────────────────╮
+    │ #Location: ~/libgeo/.nvpm/proj/libgeo │
+    │                                       │
+    │ workspace LibGeo                      │
+    │   tab Main                            │
+    │     buff Code : main.c                │
+    │     buff read : readme.txt            │
+    ╰───────────────────────────────────────╯
+
+  <2nd-example> Medium LibGeo                                    medium-libgeo
+
+    ╭───────────────────────────────────────╮
+    │ #Location: ~/libgeo/.nvpm/proj/libgeo │
+    │                                       │
+    │ workspace LibGeo                      │
+    │                                       │
+    │   tab Main                            │
+    │     buff Main : main.c                │
+    │     term Term : bash                  │
+    │                                       │
+    │   tab Point                           │
+    │     buff source:src/point.c           │
+    │     buff header:src/point.h           │
+    │                                       │
+    │   tab Line                            │
+    │     buff source:src/line.c            │
+    │     buff header:src/line.h            │
+    │                                       │
+    │   tab Plane                           │
+    │     buff source:src/plane.c           │
+    │     buff header:src/plane.h           │
+    ╰───────────────────────────────────────╯
+
+  <3rd-example> Large LibGeo                                        large-libgeo
+
+    ╭───────────────────────────────────────╮
+    │ #Location: ~/libgeo/.nvpm/proj/libgeo │
+    │                                       │
+    │ workspace LibGeo                      │
+    │                                       │
+    │   tab Main                            │
+    │     buff Main    : src/main.c         │
+    │     buff Common  : src/common.h       │
+    │     buff Makfile : Makefile           │
+    │     term Term    : bash               │
+    │                                       │
+    │   tab Math Pack                       │
+    │     buff comp.C : src/math/complex.c  │
+    │     buff comp.H : src/math/complex.h  │
+    │     buff real.C : src/math/real.c     │
+    │     buff real.H : src/math/real.h     │
+    │     buff vect.C : src/math/vector.c   │
+    │     buff vect.H : src/math/vector.h   │
+    │     buff matx.C : src/math/matrix.c   │
+    │     buff matx.H : src/math/matrix.h   │
+    │                                       │
+    │   tab Data Pack                       │
+    │     buff list.C : src/data/list.c     │
+    │     buff list.H : src/data/list.h     │
+    │     buff strg.C : src/data/string.c   │
+    │     buff strg.H : src/data/string.h   │
+    │     buff tree.C : src/data/tree.c     │
+    │     buff tree.H : src/data/tree.h     │
+    │                                       │
+    │ #...                                  │
+    ╰───────────────────────────────────────╯
+
+  The  user  must  bear  in  mind  that even though the files above might seem
+  large, it will be written only once.
+
+4.4 Disabling Structures             *nvpm-markup-language-disabling-structures*
+------------------------
+
+  This  feature  allows the user to disable any structure from being loaded by
+  adding a "*" character before any keyword. It follows the following rules:
+
+  "*workspace WNAME" will unload the whole workspace called "WNAME"
+  "*tab       TNAME" will unload the whole tab       called "TNAME"
+  "*buff      BNAME" will unload the whole buffer    called "BNAME"
+  "*term      TNAME" will unload the whole terminal  called "TNAME"
+
+  this  includes  any  sub-structure under any of those elements. Meaning that
+  for example by disabling a workspace, NVPM will unload all its tabs, buffers
+  and terminals. Whereas by disabling a tab, NVPM will disable all its buffers
+  and terminals.
+
+For example:
+-------------------------------
+  workspace LibGeo
+
+    tab Main
+      buff Main : main.c
+     *term Term : bash
+
+    tab Line
+      buff source:src/line.c
+      buff header:src/line.h
+
+   *tab Plane
+      buff source:src/plane.c
+      buff header:src/plane.h
+-------------------------------
+
+  here  both  the terminal in the first tab and the tab named as "Plane" won't
+  be loaded nor  rendered  when  the  project  file is loaded. Also, the whole
+  structure will be highlighted as a comment.
+
+  This feature comes in handy when the user doesn't want to load the structure
+  at  that  particular moment, but wants to keep it stored in the project file
+  for later use.
+
+  Another way to do it is to comment out all the lines of the structure. So:
+
+-------------------------------
+  workspace LibGeo
+
+    tab Main
+      buff Main : main.c
+    # term Term : bash
+
+    tab Line
+      buff source:src/line.c
+      buff header:src/line.h
+
+   #  tab Plane
+   #    buff source:src/plane.c
+   #    buff header:src/plane.h
+-------------------------------
+
+will produce the same result as before.
+
+4.5 Comments                                     *nvpm-markup-language-comments*
+------------
+
+To  write  a  comment,  start a line with "#". The line may have spaces before
+"#".
+
+No  inline  comments  are permited! In other words, they must not start in the
+same line of any statement.
+
+4.6 No Syntax Checker                      *nvpm-markup-language-syntax-checker*
+---------------------
+
+  Up  until  this  moment  (Jul  2021),  no checking is being done to look for
+  mistakes made when writing project files.  So just be a good kid and try not
+  to get fancy about it alright?
+
+====================================}=========================================
+ 5. NVPM Usage                                                    *nvpm-usage* {
+
+If  you've  reached  this  far,  I'll  assume  you  read about the NVPM Markup
+Language,  and  already  know how to place and write a project file. If that's
+not the case, see nvpm-markup-language.
+
+All being said, you can load a well written project file by typing the command
+
+  :NVPMLoadProject <project-name>
+
+After  that it's expected of NVPM to render Neovim's tab and status lines with
+the project's meta-information written by the user in the project file located
+at ".nvpm/proj/<project-name>".
+
+5.0 Example of what happens
+---------------------------
+
+As an example, consider the following project:
+
+-------------------------------
+
+  # Location: .nvpm/proj/Latex
+  # see |example-result|
+
+  workspace Book
+    tab Home
+      buff Main     : main.tex
+      term Terminal : ranger
+    tab Chap 01
+      buff sec 01: sec1.tex
+      buff sec 02: sec2.tex
+    tab Chap 02
+      buff sec 01: sec1.tex
+      buff sec 02: sec2.tex
+  workspace Meta
+    tab Scripts
+      buff py : script.py
+      buff pl : script.pl
+    tab Others
+      buff make   : Makefile
+      buff readme : readme.txt
+
+-------------------------------
+
+in  this  hypothetical use case, the hypothetical user would load this project
+by doing this:
+
+  :NVPMLoadProject Latex
+                     ``-- it tab completes`
+
+after that, NVPM would perform the following operations:
+
+- Run over lines of the project file. Runs only once!
+- Identify workspaces, tabs, buffers, and terminals
+- Build the tree-like data structure(a dictionary)
+- Create all buffers and terminals
+- Render tab and status lines accordingly
+
+it could/should then show something like this:
+
+                                                               example-result
+  +-------------------------------------------------------------------------+
+  |[Home]  Chap 01  Chap 02                                    Meta  [Book] |
+  +-------------------------------------------------------------------------+
+       ^      ^        ^                                        ^        ^
+       |      |        `·----------> Previous Tab               |        |
+       |      |                                                 |        |
+       |      `·--> Next    Tab                                 |        |
+       `·---------> Current Tab                                 |        |
+                                                                |        .
+                  Current Workspace <-----------------------------------·
+                                                                |
+                                                                .
+                                        Next workspace <--·-----
+    +--------- Current Buffer
+    |      +-- Next    Buffer (a terminal running ranger)
+    |      |
+    v      v
+  +-------------------------------------------------------------------------+
+  |[Main]  Terminal                                                         |
+  +-------------------------------------------------------------------------+
+
+5.1 Moving through your project
+-------------------------------
+
+You  can  use  two  commands to jump to next or previous elements in the tree.
+They are:
+
+  :NVPMNext <element>
+  :NVPMPrev <element>
+
+the <element> argument can be one of these:
+
+  buffer
+  tab
+  workspace
+
+all of them in lower case, with no abbreviations.
+
+So in the previous example, the user could for example jump to the next tab by
+performing
+
+:NVPMNext tab
+
+after that, the user should be able to see this
+
+  +-------------------------------------------------------------------------+
+  |Home [Chap 01] Chap 02                                      Meta  [Book] |
+  +-------------------------------------------------------------------------+
+      ^      ^        ^                                        ^        ^
+      |      |        `·----------> Next Tab                   |        |
+      |      |                                                 |        |
+      |      `·--> Current Tab                                 |        |
+      `·---------> Previous Tab                                |        |
+                                                               |        .
+                                       Current Workspace <-------------·
+                                                               |
+                                                               .
+                                       Next workspace <-------· 
+    +----------- Current Buffer
+    |        +-- Next Buffer
+    |        |
+    v        v
+  +-------------------------------------------------------------------------+
+  |[sec 01]  sec 02                                                         |
+  +-------------------------------------------------------------------------+
+
+see :help nvpm-mappings to see how to map special keys to move around.
+
+Note. NVPM was written by using NVPM. So check the project files the creator
+uses to develop it!
+====================================}=========================================
+ 6. Commands                                                   *nvpm-commands* {
+
+There are only those in the following list:
+
+NVPMNewProject
+NVPMLoadProject
+NVPMNext
+NVPMPrev
+NVPMEditProjects
+NVPMSaveDefaultProject
+NVPMTerminal
+NVPMVersion
+
+------------------------------------------------------------------------------
+NVPMVersion                                                   *nvpm-NVPMVersion*
+-----------
+
+syntax    :NVPMNewProject~
+args      no arguments
+action    echoes the version number for nvpm
+------------------------------------------------------------------------------
+NVPMNewProject                                             *nvpm-NVPMNewProject*
+--------------
+
+syntax    :NVPMNewProject <project-name>~
+args      [required] only one. The new project file name
+action    creates a new project file given its name
+optional  use <tab> to iterate over existing project files
+configure
+see   |g:nvpm_new_project_edit_mode|
+see   |g:nvpm_load_new_project|
+
+description
+
+When this command is performed, NVPM will create a project file and load it by
+default. For example:
+
+  :NVPMNewProject MyProject
+
+will create the following project file:
+
+    # NVPM New Project File. It works!
+    # --------------------------------
+    #
+    # --> MyProject
+
+    workspace <workspace-name>
+      tab <tab-name>
+        buff <buff-name> : .nvpm/proj/MyProject
+        term Terminal:
+
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMLoadProject                                           *nvpm-NVPMLoadProject*
+---------------
+
+syntax    :NVPMLoadProject <project-name>~
+args      [required] only one. The project file name
+action    loads an existing project file given its name
+optional  use <tab> to iterate over existing project files
+
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMNext                                                         *nvpm-NVPMNext*
+--------
+
+syntax    :NVPMNext <element>~
+args      [required] one between "workspace", "tab" or "buffer"
+action    jumps to next element in the tree
+optional  use <tab> to iterate over possible elements
+description~
+Jump to next workspace  :NVPMNext workspace
+Jump to next tab        :NVPMNext tab
+Jump to next buffer     :NVPMNext buffer
+
+Cycles back to first element
+----------------------------
+When the user reaches the last element, by performing the command will bring
+the user back to the first element of same hierarchy.
+
+counts~
+This command accepts counts. In other words, by typing a number before
+performing the command with a key mapping, NVPM will use this number as the
+number of steps to walk the tree. If the used <space> for next buffer, then
+the following actions will jump two buffers at once.
+
+2<space>
+
+other examples:
+
+Doesn't reach last buffer
+-------------------------
+
+                          before
++-------------------------------...
+| [buf 1]  buf 2   buf 3   buf 4
++-------------------------------...
+
+2<space>
+                           after
++-------------------------------...
+|  buf 1   buf 2  [buf 3]  buf 4
++-------------------------------...
+
+
+When it does!
+-------------
+
+                          before
++-------------------------------...
+|  buf 1   buf 2  [buf 3]  buf 4
++-------------------------------...
+
+2<space>
+                           after
++-------------------------------...
+| [buf 1]  buf 2   buf 3   buf 4
++-------------------------------...
+
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMPrev                                                         *nvpm-NVPMPrev*
+--------
+
+syntax    :NVPMPrev <element>~
+args      [required] one between "workspace", "tab" or "buffer"
+action    jumps to previous element in the tree
+optional  use <tab> to iterate over possible elements
+description~
+Jump to previous workspace  :NVPMPrev workspace
+Jump to previous tab        :NVPMPrev tab
+Jump to previous buffer     :NVPMPrev buffer
+
+The rest is analogous to :NVPMNext.~
+
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMEditProjects                                         *nvpm-NVPMEditProjects*
+----------------
+
+syntax    :NVPMEditProjects~
+args      [zero]
+action    Enters Edit Projects mode
+toggle    run again to go back to previously loaded project
+description~
+Creates the "NVPM Edit Projects" workspace which can be navigated just like a
+normal workspace by using the same keyboard mappings defined by the user.
+
+After the user is done editing projects, the command can be run again to go
+back to previously loaded project. All changes will be applied accordingly.
+This feature (together with the disabling structures functionality) is very
+useful for quick changes in the tree.
+
+see |nvpm-markup-language-disabling-structures|
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMSaveDefaultProject                             *nvpm-NVPMSaveDefaultProject*
+----------------------
+
+syntax    :NVPMSaveDefaultProject [<project-name>]~
+args      [optional] zero or one
+action    Saves a default project for autoload (NVPM's, not Neovim's)
+optional  use <tab> to iterate over existing project files
+description~
+1) Zero arguments : Saves the currently loaded project as default
+2) One  argument  : Saves the argument as default project if it matches a
+existing one
+
+When entering the project's root folder, NVPM will look for a default project.
+If it finds it, NVPM will load it at start.
+
+This command saves a file (.nvpm/default) storing the name of the default
+project to be loaded at startup. So equivalently:
+
+  $echo "<project-name>" > .nvpm/default~
+
+see |nvpm-mappings|
+------------------------------------------------------------------------------
+NVPMTerminal                                                 *nvpm-NVPMTerminal*
+
+syntax    :NVPMTerminal~
+args      [zero]
+action    Opens a terminal that can be acessed from anywhere.
+description~
+This is a separate terminal. Different from any user defined terminal. Very
+useful for quick operations and git operations.
+
+To go back to last buffer, just use :NVPMNext or :NVPMPrev.
+
+see |nvpm-mappings|
+====================================}=========================================
+ 7. Mappings                                                   *nvpm-mappings* {
+
+NVPM  has  no  default  keyboard  mappings.  This  is  done  to avoid bringing
+unexpected  behavior  to  the  user  cought  unaware of pre-existing mappings.
+
+But, I strongly suggest the use of the following mappings:
+
+Creator's Mappings
+----------------------------------------------
+
+" Navigation
+nmap  <space> :NVPMNext buffer<cr>
+nmap m<space> :NVPMPrev buffer<cr>
+nmap  <tab>   :NVPMNext tab<cr>
+nmap m<tab>   :NVPMPrev tab<cr>
+nmap <c-n>    :NVPMNext workspace<cr>
+nmap <BS>     :NVPMNext workspace<cr>
+nmap <c-p>    :NVPMPrev workspace<cr>
+nmap <F8>     :NVPMNewProject<space>
+nmap <F9>     :NVPMSaveDefaultProject<space>
+nmap <F10>    :NVPMLoadProject<space>
+nmap <F12>    :NVPMEditProjects<cr>
+nmap mt       :NVPMTerminal<cr>
+nmap ml       :call g:nvpm.line.swap()<cr>
+
+" Navigation Without The Echoing
+" nmap <silent>  <space> :NVPMNext buffer<cr>
+" nmap <silent> m<space> :NVPMPrev buffer<cr>
+" nmap <silent>  <tab>   :NVPMNext tab<cr>
+" nmap <silent> m<tab>   :NVPMPrev tab<cr>
+" nmap <silent> <c-n>    :NVPMNext workspace<cr>
+" nmap <silent> <BS>     :NVPMNext workspace<cr>
+" nmap <silent> <c-p>    :NVPMPrev workspace<cr>
+
+----------------------------------------------
+
+why these mappings?
+-------------------
+
+They were already approved by a few users. They were thought to be mostly used
+with only one key stroke per action.
+
+Buffers  are  the  one  structure that  users  most switch between. That's why
+<space>  is  used.  The  letter  'm'  is  used  for going to previous tabs and
+buffers,  but  associated  with  their main key, being <space> for buffers and
+<tab> for (guess what) tabs.
+
+Control+n      and     Control+p     are     reserved     for     next     and
+previous  workspaces,  respectively.  Exceptionally,  the  backspace  - <BS> -
+key  is  also  used  for  the  next  workspace,  but only by using it that you
+will understand why. The rest are self explanatory.
+
+Note. The 'm' key is natively used by a Neovim command. The action is bookmark
+lines of the file. See ":help m"
+
+====================================}=========================================
+ 8. Configuration                                         *nvpm-configuration* {
+
+There are a few options the user may wanna know about. They must be set
+somewhere in the user's init.vim. Here is a list with all of them set with
+their default values.
+
+------------------------------------------------------------------------------
+Git Info Refresh Delay (miliseconds)                   *g:nvpm_line_git_delayms*
+------------------------------------
+
+type   : boolean
+default: 2000 (2 seconds)
+range  : 0 to infinity
+action : Controls the refresh time of the git information on the statusline
+description~
+A timer  is run asyncronously every g:nvpm_line_git_delayms miliseconds, which
+triggers the  function to retrieve git information. If g:nvpm_line_git_info is
+0, then this timer is never started.
+
+------------------------------------------------------------------------------
+Git Information                                           *g:nvpm_line_git_info*
+---------------
+
+type   : boolean
+default: 0
+range  : 1 or 0
+action : Displays the git branch name, and modified status, on the statusline
+description~
+Shows nothing if not in a git repository.
+
+------------------------------------------------------------------------------
+Make Directory Tree                                            *g:nvpm_maketree*
+-------------------
+
+type   : boolean
+default: 1
+range  : 1 or 0
+action : Makes the directory tree unders a filename in a buff entry.
+description~
+If set to 1, whenever the user creates a project file buff entry, say:
+
+  buff file : /path/to/new/notes.txt
+
+NVPM  will  consider  the  "/path/to/new" part as a directory path, and create
+all directories that will house  the  file  "notes.txt". This function behaves
+exactly like the "mkdir -p" shell command.
+
+If the portion "/path/to/new" already exists, or it is a file, then nothing is
+done. In very case where the path /path/to/new is a file, NVPM will not create
+the    directory    /path/to/new,    which   will   render   the   saving   of
+/path/to/new/notes.txt impossible. This is done so the user doesn't lose the
+content of the file /path/to/new.
+
+------------------------------------------------------------------------------
+Show Project Name                                    *g:nvpm_line_show_projname*
+-----------------
+
+type   : boolean
+default: 0
+range  : 1 or 0
+action : Displays the name of the current loaded project file
+description~
+When this global variable is set to 1, NVPM will display the name of the
+current loaded project file on the top right-most corner of the tabline.
+
+See |nvpm-syntax-highlight|.
+
+------------------------------------------------------------------------------
+Closure Characters                                         *g:nvpm_line_closure*
+------------------
+
+type   : boolean
+default: 1
+range  : 1 or 0
+action : Enables or disables current element characters
+description~
+When this global variable is set to 1, NVPM will enclosure current tabs and
+buffers with the characters "[]" (brackets) and the current workspace with the
+characters "()" (parenthesis).
+
+They become obsolete when using syntax hightlight colors for current buffers
+and tabs. See |nvpm-syntax-highlight|.
+
+------------------------------------------------------------------------------
+Inner Space Option                                      *g:nvpm_line_innerspace*
+------------------
+
+type   : boolean
+default: 0
+range  : 1 or 0
+action : Puts one space around names of workspaces, tabs and buffers
+description~
+This serves the purpuse of keeping the names of workspaces, tabs, and buffers
+more apart from each other.
+
+They become obsolete when using syntax hightlight colors for current buffers
+and tabs. See |nvpm-syntax-highlight|.
+
+------------------------------------------------------------------------------
+Line Bottom Center                                    *g:nvpm_line_bottomcenter*
+------------------
+
+type   : string
+default: ' ⬤ %f'
+action : Applies string to statusline. Bottom Center. Nothing shows if empty!
+description~
+
+%f means the file relative path~
+
+------------------------------------------------------------------------------
+Line Bottom Right                                      *g:nvpm_line_bottomright*
+-----------------
+
+type   : string
+default: '%y%m ⬤ %l,%c/%P'
+action : Applies string to statusline. Right corner. Nothing shows if empty!
+description~
+
+result~
+It will display the current line, current column, virtual columns and
+percentage of the file.
+
+%y means filetype~
+%m means modified flag~
+%l means current line~
+%c means current column~
+%P means percentage~
+
+------------------------------------------------------------------------------
+New Project Edit Mode                             *g:nvpm_new_project_edit_mode*
+---------------------
+
+type   : boolean
+default: 0
+action : Enters Edit Projects Mode after running |:NVPMNewProject| command.
+description~
+If 1, when creating new projects with :NVPMNewProject, NVPM will create the
+project if it's non-existing, and then it immediately does the following
+actions:
+
+- Loads the newly created project
+- Enters Edit Projects Mode as if :NVPMEditProjects was performed
+
+------------------------------------------------------------------------------
+Load New Project Option                                *g:nvpm_load_new_project*
+-----------------------
+
+type   : boolean
+default: 1
+action : Loads the newly created project after running |:NVPMNewProject|
+description~
+If 0, when creating new projects with :NVPMNewProject, NVPM will only create
+the project file with default settings and do nothing else.
+
+Note. This option is ignored when |g:nvpm_new_project_edit_mode| equals 1.
+
+------------------------------------------------------------------------------
+NVPM Local Directory                                          *g:nvpm_local_dir*
+--------------------
+
+type   : string
+default: '.nvpm'
+action : sets local directory for project files
+description~
+The user's user must have write permitions to it. Otherwise,
+
+$man chmod~
+$man chown~
+
+NVPM will use this folder to create files regarding project files, default
+project file and other future implementations that exists only in the
+creator's mind yet. But for now, NVPM expects only those two:
+
+.nvpm/proj/<list-of-project-files>
+.nvpm/default
+^       `------ a file
+|
++---- a hidden folder
+
+see |nvpm-markup-language|
+see |nvpm-project-files|
+
+------------------------------------------------------------------------------
+Load Default Project                                       *g:nvpm_load_default*
+--------------------
+
+type   : boolean
+default: 1
+action : Permits default load project to happen
+description~
+
+When set to 1 (one), NVPM will look the file located at .nvpm/default. If it
+finds it, its content will be considered as a project file name. If this file
+exists, NVPM will try to load it.
+
+If .nvpm/default stores a non-existing project file, nothing will happen.
+If g:nvpm_load_default equals zero, also nothing will happen. In other words,
+this completely disable the default project loading feature.
+
+see |nvpm-NVPMSaveDefaultProject|
+====================================}=========================================
+ 9. Buglist                                                        *nvpm-bugs* {
+
+|multi-terminals-after-edit| {
+
+15 Mar 2020
+-----------
+
+Detected a missbehaviour regarding the creation of buffers and specially
+terminals. When using the "term" keyword in a project file, the terminals are
+recreated every time the project file is loaded. Not recomended to use this
+feature for now. Use NVPMTerminal command instead, which works just fine.
+
+This bug is being solved. It's origin is already know and it's being taken
+care of.
+
+}
+
+====================================}=========================================
+press zo to see the content, and zc to close it back. See :h zo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vim: ft=help tw=78 isk+=<,>,\:,-,' fdm=marker fmr={,} fdl=0 fen

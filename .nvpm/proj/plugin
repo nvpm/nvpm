@@ -1,0 +1,42 @@
+
+
+# Plugin  {
+
+workspace NVPM-Plugin 
+
+  tab Main
+    buff plugin   : plugin/nvpm.vim
+    buff init.vim : ~/.config/nvim/init.vim
+    buff readme   : README.md
+
+ *tab Colors
+    buff syntax : syntax/nvpm.vim
+    buff proj   : .nvpm/proj/plugin
+
+  tab Doc
+    buff docnvpm : doc/nvpm.txt
+    buff readme  : README.md
+    buff license : LICENSE
+    buff version : version
+
+# }
+# VimDocs {
+
+workspace Vim-Docs
+
+  tab Syntax
+    buff syntax : /usr/share/nvim/runtime/doc/syntax.txt
+    buff usr_06 : /usr/share/nvim/runtime/doc/usr_06.txt
+    buff usr_44 : /usr/share/nvim/runtime/doc/usr_44.txt
+
+  tab VimLang
+    buff visual  : /usr/share/nvim/runtime/doc/visual.txt
+    buff eval    : /usr/share/nvim/runtime/doc/eval.txt
+    buff map     : /usr/share/nvim/runtime/doc/map.txt
+    buff windows : /usr/share/nvim/runtime/doc/windows.txt
+    buff options : /usr/share/nvim/runtime/doc/options.txt
+
+  tab Main
+    term Ranger : ranger /usr/share/nvim/runtime/doc
+
+#}
