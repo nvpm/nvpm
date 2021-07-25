@@ -26,7 +26,6 @@ nvpm-configuration	nvpm.txt	/*nvpm-configuration*
 nvpm-group	nvpm.txt	/*nvpm-group*
 nvpm-installation	nvpm.txt	/*nvpm-installation*
 nvpm-intro	nvpm.txt	/*nvpm-intro*
-nvpm-mappings	nvpm.txt	/*nvpm-mappings*
 nvpm-markup-language	nvpm.txt	/*nvpm-markup-language*
 nvpm-markup-language-comments	nvpm.txt	/*nvpm-markup-language-comments*
 nvpm-markup-language-disabling-structures	nvpm.txt	/*nvpm-markup-language-disabling-structures*

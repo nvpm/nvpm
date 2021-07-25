@@ -14,10 +14,10 @@ workspace NVPM-Plugin
     buff proj   : .nvpm/proj/plugin
 
   tab Doc
-    buff docnvpm : doc/nvpm.txt
-    buff readme  : README.md
-    buff license : LICENSE
-    buff version : version
+    buff doc : doc/nvpm.txt
+    buff read: README.md
+    buff lice: LICENSE
+    buff vers: version
 
 # }
 # VimDocs {

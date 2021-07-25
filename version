@@ -1,1 +1,6 @@
-nvpm-version: v2.0.2
+v2.0.3: new version system
+v2.0.2: gittimer only upon g:nvpm.line.show()
+v2.0.1: helptags update
+v2.0.0: nvpm
+v1.0.0: vpm
+v0.0.0: vws

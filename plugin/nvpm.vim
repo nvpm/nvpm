@@ -953,7 +953,8 @@ call g:nvpm.init()
 if get(g: ,'nvpm_load_default',1)
   call g:nvpm.deft()
 endif
-let g:nvpm.version=join(readfile(resolve(expand("<sfile>:p:h"))."/../version"))
+let s:version = readfile(resolve(expand("<sfile>:p:h"))."/../version")
+let s:version = len(s:version)?s:version[0]:''
 " init }
 " Commands     {
 
@@ -982,7 +983,7 @@ command! -count -complete=custom,NVPMNextPrev -nargs=1 NVPMPrev call g:nvpm.loop
 
 command! NVPMTerminal     call g:nvpm.term.edit()
 command! NVPMEditProjects call g:nvpm.edit.proj()
-command! NVPMVersion      echo g:nvpm.version
+command! NVPMVersion      echo s:version
 
 " }
 " AutoCommands {

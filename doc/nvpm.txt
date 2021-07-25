@@ -24,9 +24,8 @@ CONTENTS                                                                *nvpm* {
  3. NVPM Language                                         nvpm-markup-language
  4. NVPM Usage                                                      nvpm-usage
  5. Commands                                                     nvpm-commands
- 6. Mappings                                                     nvpm-mappings
- 7. Configuration                                           nvpm-configuration
- 8. Buglist                                                          nvpm-bugs
+ 6. Configuration                                           nvpm-configuration
+ 7. Buglist                                                          nvpm-bugs
 ====================================}=========================================
  0. Quick Start                                             *nvpm-quick-start* {
 
@@ -859,63 +858,7 @@ To go back to last buffer, just use :NVPMNext or :NVPMPrev.
 
 see |nvpm-mappings|
 ====================================}=========================================
- 7. Mappings                                                   *nvpm-mappings* {
-
-NVPM  has  no  default  keyboard  mappings.  This  is  done  to avoid bringing
-unexpected  behavior  to  the  user  cought  unaware of pre-existing mappings.
-
-But, I strongly suggest the use of the following mappings:
-
-Creator's Mappings
-----------------------------------------------
-
-" Navigation
-nmap  <space> :NVPMNext buffer<cr>
-nmap m<space> :NVPMPrev buffer<cr>
-nmap  <tab>   :NVPMNext tab<cr>
-nmap m<tab>   :NVPMPrev tab<cr>
-nmap <c-n>    :NVPMNext workspace<cr>
-nmap <BS>     :NVPMNext workspace<cr>
-nmap <c-p>    :NVPMPrev workspace<cr>
-nmap <F8>     :NVPMNewProject<space>
-nmap <F9>     :NVPMSaveDefaultProject<space>
-nmap <F10>    :NVPMLoadProject<space>
-nmap <F12>    :NVPMEditProjects<cr>
-nmap mt       :NVPMTerminal<cr>
-nmap ml       :call g:nvpm.line.swap()<cr>
-
-" Navigation Without The Echoing
-" nmap <silent>  <space> :NVPMNext buffer<cr>
-" nmap <silent> m<space> :NVPMPrev buffer<cr>
-" nmap <silent>  <tab>   :NVPMNext tab<cr>
-" nmap <silent> m<tab>   :NVPMPrev tab<cr>
-" nmap <silent> <c-n>    :NVPMNext workspace<cr>
-" nmap <silent> <BS>     :NVPMNext workspace<cr>
-" nmap <silent> <c-p>    :NVPMPrev workspace<cr>
-
-----------------------------------------------
-
-why these mappings?
--------------------
-
-They were already approved by a few users. They were thought to be mostly used
-with only one key stroke per action.
-
-Buffers  are  the  one  structure that  users  most switch between. That's why
-<space>  is  used.  The  letter  'm'  is  used  for going to previous tabs and
-buffers,  but  associated  with  their main key, being <space> for buffers and
-<tab> for (guess what) tabs.
-
-Control+n      and     Control+p     are     reserved     for     next     and
-previous  workspaces,  respectively.  Exceptionally,  the  backspace  - <BS> -
-key  is  also  used  for  the  next  workspace,  but only by using it that you
-will understand why. The rest are self explanatory.
-
-Note. The 'm' key is natively used by a Neovim command. The action is bookmark
-lines of the file. See ":help m"
-
-====================================}=========================================
- 8. Configuration                                         *nvpm-configuration* {
+ 7. Configuration                                         *nvpm-configuration* {
 
 There are a few options the user may wanna know about. They must be set
 somewhere in the user's init.vim. Here is a list with all of them set with
@@ -1116,7 +1059,7 @@ this completely disable the default project loading feature.
 
 see |nvpm-NVPMSaveDefaultProject|
 ====================================}=========================================
- 9. Buglist                                                        *nvpm-bugs* {
+ 8. Buglist                                                        *nvpm-bugs* {
 
 |multi-terminals-after-edit| {
 
