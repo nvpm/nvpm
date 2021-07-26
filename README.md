@@ -18,6 +18,15 @@ Here is a quick demonstration of the plugin being used. The rest can be seen  at
 </p>
 </figure>
 
+And here is a test run in a real project.
+
+<figure>
+<p  align=center>
+  <img width=85% height=85% 
+  src="https://gitlab.com/nvpm/home/-/raw/main/nvpm-usage.gif"/>
+</p>
+</figure>
+
 
 # installation
 
