@@ -120,7 +120,19 @@ endfunction
 function! g:nvpm.loop(s,t)                 "{
 
   if !g:nvpm.data.loaded
-    echo 'Load project first [:NVPMLoadProject]'
+    if a:t == 'buffer'
+      if a:s < 0
+        :bprev
+      else
+        :bnext
+      endif
+    elseif a:t == 'tab'
+      if a:s < 0
+        :tabprevious
+      else
+        :tabnext
+      endif
+    endif
     return -1
   endif
   let step = v:count1 * a:s

@@ -1,3 +1,4 @@
+v2.1.0: handling non-loaded project file NVPMNext and NVPMPrev
 v2.0.4: new gif on readme
 v2.0.3: new version system
 v2.0.2: gittimer only upon g:nvpm.line.show()
