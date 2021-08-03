@@ -962,7 +962,7 @@ endfunction
 "}
 " Init         {
 call g:nvpm.init()
-if get(g: ,'nvpm_load_default',1)
+if get(g: ,'nvpm_load_default',1) && !argc()
   call g:nvpm.deft()
 endif
 let s:version = readfile(resolve(expand("<sfile>:p:h"))."/../version")
