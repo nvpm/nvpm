@@ -1,20 +1,21 @@
 
 # Introduction
 
-NVPM  stands  for  Neovim Project Manager. It's mission is to assist the user on
-managing  large quantities of files in any project. The main goal is to create a
-tree-like  structure  in order to overcome the linearity of Neovim's bufferlist.
-To  do  that,  the  creator was forced to totally ignore how Neovim handles each
-loaded  file.  The  approach  here  is to make a plan about which files the user
-wants  to  open  and   then write  what is called a  project file . Those  files
-follow  the NVPM Markup Language, which was specifically created for this plugin.
+NVPM  stands  for Neovim Project Manager. It's mission is to assist the user
+on managing large  quantities  of  files in any project. The main goal is to
+create a tree-like structure in order  to overcome the linearity of Neovim's
+bufferlist. To do that, the creator was  forced to totally ignore how Neovim
+handles each loaded file. The approach here  is  to  make a plan about which
+files the user wants to open and then write what is called  a project file .
+Those files follow the NVPM Markup Language, which was specifically  created
+for this plugin.
 
-Here is a quick demonstration of the plugin being used. The rest can be seen  at 
-`:help nvpm`. Enjoy.
+Here is a quick demonstration of the plugin being used. The rest can be seen
+at `:help nvpm`. Enjoy.
 
 <figure>
 <p  align=center>
-  <img src="https://gitlab.com/nvpm/home/-/raw/main/nvpm.gif"/>
+  <img src="https://gitlab.com/nvpm/home/home/-/raw/main/nvpm.gif"/>
 </p>
 </figure>
 
@@ -23,20 +24,20 @@ And here is a test run in a real project.
 <figure>
 <p  align=center>
   <img width=85% height=85% 
-  src="https://gitlab.com/nvpm/home/-/raw/main/nvpm-usage.gif"/>
+  src="https://gitlab.com/nvpm/home/home/-/raw/main/nvpm-usage.gif"/>
 </p>
 </figure>
 
 
-# installation
+# Installation
 
-## using `vim-plug`
+## Using `vim-plug`
 
 ```vim
 Plug 'https://gitlab.com/nvpm/nvpm' , {'branch' : 'main'}
 ```
 
-## using `runtimepath`
+## Using `runtimepath`
 
 ```bash
 cd $HOME
@@ -44,7 +45,7 @@ git clone https://gitlab.com/nvpm/nvpm
 echo "set runtimepath+=~/nvpm" >> .config/nvim/init.vim
 ```
 
-## copying files with `bash`
+## Copying files with `bash`
 
 ```bash
 cd $HOME
@@ -56,7 +57,7 @@ touch .config/nvim/doc/tags
 cat nvpm/doc/tags >> .config/nvim/doc/tags
 ```
 
-# quick configuration
+# Quick configuration
 
 I'm  not  sure  how  you will want to configure NVPM, but the following have
 been known to work well  for  several users. They are kind of an agreed upon
@@ -142,7 +143,7 @@ ml         : will toggle the status and tab lines in and out
 
 For more info, please see `:help nvpm`.
 
-# discussion and news on Telegram (in Portuguese and English)
+# Discussions and news on Telegram (in Portuguese and English)
 
 * [group](https://t.me/nvpmuser)
 * [channel](https://t.me/nvpmnews)
