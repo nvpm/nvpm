@@ -11,11 +11,12 @@ CREATOR                                                         Itamar Soares  {
                                                                    iasj@pm.me
                                                       https://gitlab.com/iasj
 ====================================}===========================================
-NVPM Group                                                        *nvpm-group* {
-
+NVPM Group on Gitlab                                              *nvpm-group* {
 -> https://gitlab.com/nvpm
--> https://t.me/nvpmuser
--> https://t.me/nvpmnews
+
+Discussions and news on Telegram (in Portuguese and English)
+-> https://t.me/nvpmuser (group)
+-> https://t.me/nvpmnews (channel)
 ====================================}=========================================
 CONTENTS                                                                *nvpm* {
  0. Quick Start                                               nvpm-quick-start
@@ -26,6 +27,7 @@ CONTENTS                                                                *nvpm* {
  5. Commands                                                     nvpm-commands
  6. Configuration                                           nvpm-configuration
  7. Buglist                                                          nvpm-bugs
+ 8. AutoCommands                                             nvpm-autocommands
 ====================================}=========================================
  0. Quick Start                                             *nvpm-quick-start* {
 
@@ -40,6 +42,11 @@ CONTENTS                                                                *nvpm* {
     set hidden
     set showtabline=2
     set laststatus=2
+
+    " fix zoom terminal exit.
+    " See :help nvpm-autocommands
+    " See :help g:nvpm_zoom_aufix_terminal
+    "let g:nvpm_zoom_aufix_terminal = 1
 
     " Project options
     let g:nvpm_new_project_edit_mode = 1
@@ -654,7 +661,7 @@ after that, the user should be able to see this
                                        Current Workspace <-------------·
                                                                |
                                                                .
-                                       Next workspace <-------· 
+                                       Next workspace <-------·
     +----------- Current Buffer
     |        +-- Next Buffer
     |        |
@@ -1069,7 +1076,7 @@ see |nvpm-NVPMSaveDefaultProject|
 ====================================}=========================================
  8. Buglist                                                        *nvpm-bugs* {
 
-|multi-terminals-after-edit| {
+|multi-terminals-after-edit|
 
 15 Mar 2020
 -----------
@@ -1082,7 +1089,52 @@ feature for now. Use NVPMTerminal command instead, which works just fine.
 This bug is being solved. It's origin is already know and it's being taken
 care of.
 
-}
+
+====================================}=========================================
+ 9. AutoCommands                                           *nvpm-autocommands* {
+
+  For  the  moment,  there  is  only  one  autocommand  regarding  a fix of an
+  undesirable behaviour with the zoom feature. It's really a bug, but  just  a
+  side effect of opening a terminal buffer, either with a :terminal or with
+  :NVPMTerminal,  when  using  the Zoom feature (:NVPMZoomSwap). After exiting
+  the  terminal,  the  last  buffers   gets  unfocused,  and  only  performing
+  :NVPMZoomSwap twice would do the trick  of  going back to the last buffer in
+  zoom mode.
+
+  The  following is a controller variable of this autocommand for a `WinEnter`
+  event:
+
+------------------------------------------------------------------------------
+AutoCommand Fix Zoom Mode Terminal Exit             *g:nvpm_zoom_aufix_terminal*
+---------------------------------------
+
+status : experimental
+type   : boolean
+default: 1
+range  : 0 or 1
+action : Controls the creation of the autocommand described above
+description~
+  Autocommands  may become unpredictable depending on what the user may define
+  in their own autocommands.  If  that's  your case, you may wanna toggle this
+  variable for debugging. For now I can only  promise  to  make this robust in
+  the future.
+
+  The following is the very code regarding the autocommand itself:
+
+see it in file: `plugin/nvpm.vim`
+if get(g:,'nvpm_zoom_aufix_terminal',1)
+  let au = 'au WinEnter '
+  let au .= g:nvpm.zoom.lbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.bbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.tbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.rbuffer
+  let au .= ' '
+  let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
+  exec au
+endif
 
 ====================================}=========================================
 press zo to see the content, and zc to close it back. See :h zo

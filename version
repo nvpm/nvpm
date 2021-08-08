@@ -1,3 +1,4 @@
+v2.3.1: aufix for "zoom mode exit terminal" bug
 v2.3.0: unearthed zoom feature [Alpha version]
 v2.2.1: readme update new gif paths
 v2.2.0: ignore Load Defaults when argument files are passed on nvim call

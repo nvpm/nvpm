@@ -23,7 +23,7 @@ And here is a test run in a real project.
 
 <figure>
 <p  align=center>
-  <img width=85% height=85% 
+  <img width=85% height=85%
   src="https://gitlab.com/nvpm/home/home/-/raw/main/nvpm-usage.gif"/>
 </p>
 </figure>
@@ -69,6 +69,11 @@ set termguicolors
 set hidden
 set showtabline=2
 set laststatus=2
+
+" fix zoom terminal exit.
+" See :help nvpm-autocommands
+" See :help g:nvpm_zoom_aufix_terminal
+"let g:nvpm_zoom_aufix_terminal = 1
 
 " Project options
 let g:nvpm_new_project_edit_mode = 1

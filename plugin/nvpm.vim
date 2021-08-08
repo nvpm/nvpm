@@ -19,7 +19,6 @@ let g:nvpm.data = {}
 let g:nvpm.data.make = {}
 let g:nvpm.data.curr = {}
 
-
 " }
 " Functions    {
 
@@ -954,18 +953,6 @@ function! g:nvpm.zoom.init() "{
 endfunction " }
 function! g:nvpm.zoom.highlight() "{
 
-  "hi StatusLine   ctermfg=15 ctermbg=14 guifg='7c7c7c' guibg=bg gui=none
-  "hi StatusLineNC ctermfg=15 ctermbg=14 guifg=bg       guibg=bg gui=none
-  "hi LineNr       ctermfg=15 ctermbg=14 guibg=bg                gui=none
-
-  "hi SignColumn ctermfg=15 ctermbg=14 guibg=bg                  gui=none
-  "hi VertSplit  ctermfg=15 ctermbg=14 guifg=bg guibg=bg         gui=none
-  "hi NonText    ctermfg=15 ctermbg=14 guifg=bg                  gui=none
-
-  "hi TabLine     ctermfg=15 ctermbg=14 guifg='7c7c00'  guibg=bg gui=none
-  "hi TabLineFill ctermfg=15 ctermbg=14 guifg='7c7c00'  guibg=bg gui=none
-  "hi TabLineSell ctermfg=15 ctermbg=14 guifg='7c7c00'  guibg=bg gui=none
-
   hi TabLine      ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
   hi TabLineFill  ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
   hi TabLineSell  ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
@@ -981,7 +968,6 @@ function! g:nvpm.zoom.highlight() "{
 
 endfunction " }
 function! g:nvpm.zoom.enable() "{
-
 
   exec 'silent! top split '. g:nvpm.zoom.tbuffer
   let &l:statusline='%{g:nvpm.zoom.null()}'
@@ -1016,13 +1002,17 @@ function! g:nvpm.zoom.enable() "{
   let self.enabled = 1
 
 endfunction "}
-function! g:nvpm.zoom.disable() "{
-
-  "only
+function! g:nvpm.zoom.bdel() "{
   exec ':silent! bdel '. self.lbuffer
   exec ':silent! bdel '. self.bbuffer
   exec ':silent! bdel '. self.tbuffer
   exec ':silent! bdel '. self.rbuffer
+endfu " }
+function! g:nvpm.zoom.disable() "{
+
+  "only
+
+  call self.bdel()
   let self.enabled = 0
 
 endfunction "}
@@ -1058,6 +1048,14 @@ function! g:nvpm.zoom.swap() "{
   if g:nvpm.data.loaded|call g:nvpm.data.curr.edit()|endif
 
 endfunction " }
+function! g:nvpm.zoom.rset() "{
+
+  let self.enabled = 0
+  call self.bdel()
+  call self.swap()
+
+endfunction " }
+
 fu! g:nvpm.zoom.save(group)
 
   let output = execute('hi '.a:group)
@@ -1169,6 +1167,20 @@ command! NVPMVersion      echo s:version
 
 " }
 " AutoCommands {
+
+if get(g:,'nvpm_zoom_aufix_terminal',1)
+  let au = 'au WinEnter '
+  let au .= g:nvpm.zoom.lbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.bbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.tbuffer
+  let au .= ','
+  let au .= g:nvpm.zoom.rbuffer
+  let au .= ' '
+  let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
+  exec au
+endif
 
 " Set project files filetype as nvpm
 "execute 'au BufEnter *'. g:nvpm.dirs.path("proj") .'* set ft=nvpm'

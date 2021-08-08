@@ -10,6 +10,7 @@ g:nvpm_load_new_project	nvpm.txt	/*g:nvpm_load_new_project*
 g:nvpm_local_dir	nvpm.txt	/*g:nvpm_local_dir*
 g:nvpm_maketree	nvpm.txt	/*g:nvpm_maketree*
 g:nvpm_new_project_edit_mode	nvpm.txt	/*g:nvpm_new_project_edit_mode*
+g:nvpm_zoom_aufix_terminal	nvpm.txt	/*g:nvpm_zoom_aufix_terminal*
 nvpm	nvpm.txt	/*nvpm*
 nvpm-NVPMEditProjects	nvpm.txt	/*nvpm-NVPMEditProjects*
 nvpm-NVPMLineSwap	nvpm.txt	/*nvpm-NVPMLineSwap*
@@ -21,6 +22,7 @@ nvpm-NVPMSaveDefaultProject	nvpm.txt	/*nvpm-NVPMSaveDefaultProject*
 nvpm-NVPMTerminal	nvpm.txt	/*nvpm-NVPMTerminal*
 nvpm-NVPMVersion	nvpm.txt	/*nvpm-NVPMVersion*
 nvpm-NVPMZoomSwap	nvpm.txt	/*nvpm-NVPMZoomSwap*
+nvpm-autocommands	nvpm.txt	/*nvpm-autocommands*
 nvpm-buff	nvpm.txt	/*nvpm-buff*
 nvpm-bugs	nvpm.txt	/*nvpm-bugs*
 nvpm-commands	nvpm.txt	/*nvpm-commands*
