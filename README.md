@@ -28,6 +28,14 @@ And here is a test run in a real project.
 </p>
 </figure>
 
+And here is a quick demonstration of its `"distraction-free"` feature.
+
+<figure>
+<p  align=center>
+  <img width=85% height=85% 
+  src="https://gitlab.com/nvpm/home/home/-/raw/main/zoom.gif"/>
+</p>
+</figure>
 
 # Installation
 
