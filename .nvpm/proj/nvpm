@@ -6,8 +6,9 @@ workspace NVPM-Plugin
 
   tab Main
     buff plugin   : plugin/nvpm.vim
-    buff init.vim : ~/.config/nvim/init.vim
-    buff readme   : README.md
+    buff vpm      : ../vpm.vim
+   *buff init.vim : ~/.config/nvim/init.vim
+   *buff readme   : README.md
 
  *tab Colors
     buff syntax : syntax/nvpm.vim

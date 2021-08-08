@@ -1,3 +1,4 @@
+v2.3.0: unearthed zoom feature [Alpha version]
 v2.2.1: readme update new gif paths
 v2.2.0: ignore Load Defaults when argument files are passed on nvim call
 v2.1.0: handling non-loaded project file NVPMNext and NVPMPrev

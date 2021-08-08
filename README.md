@@ -84,16 +84,16 @@ let g:nvpm_line_show_projname = 1
 let g:nvpm_line_bottomright   = '%y%m ⬤ %l,%c/%P'
 let g:nvpm_line_bottomcenter  = ' ⬤ %f'
 let g:nvpm_line_git_info      = 1
-let g:nvpm_line_git_delayms   = 1000
+let g:nvpm_line_git_delayms   = 5000
 
 " Git Info Colors
-hi NVPMLineGitModified guifg=#ff0000 gui=bold
+hi NVPMLineGitModified guifg=#aa4371 gui=bold
 hi NVPMLineGitStaged   guifg=#00ff00 gui=bold
 hi NVPMLineGitClean    guifg=#77aaaa gui=bold
 
 " Tab Colors
 hi NVPMLineTabs     guifg=#777777 gui=bold
-hi NVPMLineTabsSel  guibg=#337a8a guifg=#ffffff gui=bold
+hi NVPMLineTabsSel  guibg=#333a5a guifg=#ffffff gui=bold
 hi NVPMLineTabsFill guibg=none
 " Buffer Colors
 hi link NVPMLineBuff     NVPMLineTabs
@@ -103,7 +103,7 @@ hi link NVPMLineBuffFill NVPMLineTabsFill
 hi link NVPMLineWksp     NVPMLineTabs
 hi link NVPMLineWkspSel  NVPMLineTabsSel
 " Project File Name Colors
-hi NVPMLineProjSel   guifg=#000000 guibg=#00ffff
+hi NVPMLineProjSel   guifg=#000000 guibg=#007777
 
 nmap <silent><space>  :NVPMNext buffer<cr>
 nmap <silent>m<space> :NVPMPrev buffer<cr>
@@ -118,7 +118,9 @@ imap <F8>        <esc>:w<cr>:NVPMEditProjects<cr>
 nmap <F9>             :NVPMSaveDefaultProject<space>
 nmap <F10>            :NVPMNewProject<space>
 nmap mt               :NVPMTerminal<cr>
-nmap ml               :call g:nvpm.line.swap()<cr>
+nmap ml               :NVPMLineSwap<cr>
+nmap <silent>mz       :NVPMZoomSwap<cr>
+nmap <silent><F11>    :NVPMZoomSwap<cr>
 ```
 
 These mappings will translate into:

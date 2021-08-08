@@ -55,16 +55,16 @@ CONTENTS                                                                *nvpm* {
     let g:nvpm_line_bottomright   = '%y%m ⬤ %l,%c/%P'
     let g:nvpm_line_bottomcenter  = ' ⬤ %f'
     let g:nvpm_line_git_info      = 1
-    let g:nvpm_line_git_delayms   = 1000
+    let g:nvpm_line_git_delayms   = 5000
 
     " Git Info Colors
-    hi NVPMLineGitModified guifg=#ff0000 gui=bold
+    hi NVPMLineGitModified guifg=#aa4371 gui=bold
     hi NVPMLineGitStaged   guifg=#00ff00 gui=bold
     hi NVPMLineGitClean    guifg=#77aaaa gui=bold
 
     " Tab Colors
     hi NVPMLineTabs     guifg=#777777 gui=bold
-    hi NVPMLineTabsSel  guibg=#337a8a guifg=#ffffff gui=bold
+    hi NVPMLineTabsSel  guibg=#333a5a guifg=#ffffff gui=bold
     hi NVPMLineTabsFill guibg=none
     " Buffer Colors
     hi link NVPMLineBuff     NVPMLineTabs
@@ -74,7 +74,7 @@ CONTENTS                                                                *nvpm* {
     hi link NVPMLineWksp     NVPMLineTabs
     hi link NVPMLineWkspSel  NVPMLineTabsSel
     " Project File Name Colors
-    hi NVPMLineProjSel   guifg=#000000 guibg=#00ffff
+    hi NVPMLineProjSel   guifg=#000000 guibg=#007777
 
     nmap <silent><space>  :NVPMNext buffer<cr>
     nmap <silent>m<space> :NVPMPrev buffer<cr>
@@ -89,7 +89,9 @@ CONTENTS                                                                *nvpm* {
     nmap <F9>             :NVPMSaveDefaultProject<space>
     nmap <F10>            :NVPMNewProject<space>
     nmap mt               :NVPMTerminal<cr>
-    nmap ml               :call g:nvpm.line.swap()<cr>
+    nmap ml               :NVPMLineSwap<cr>
+    nmap <silent>mz       :NVPMZoomSwap<cr>
+    nmap <silent><F11>    :NVPMZoomSwap<cr>
 
 --- UNTIL HERE
 
@@ -113,7 +115,6 @@ CONTENTS                                                                *nvpm* {
 
 For more info on these settings, please see:
 
-:help nvpm-mappings
 :help nvpm-configuration
 
 
@@ -662,8 +663,6 @@ after that, the user should be able to see this
   |[sec 01]  sec 02                                                         |
   +-------------------------------------------------------------------------+
 
-see :help nvpm-mappings to see how to map special keys to move around.
-
 Note. NVPM was written by using NVPM. So check the project files the creator
 uses to develop it!
 ====================================}=========================================
@@ -679,7 +678,23 @@ NVPMEditProjects
 NVPMSaveDefaultProject
 NVPMTerminal
 NVPMVersion
+NVPMLineSwap
+NVPMZoomSwap
 
+------------------------------------------------------------------------------
+NVPMZoomSwap                                                 *nvpm-NVPMZoomSwap*
+------------
+
+syntax    :NVPMZoomSwap
+args      no arguments
+action    Toggles on and off the no-distraction mode
+------------------------------------------------------------------------------
+NVPMLineSwap                                                 *nvpm-NVPMLineSwap*
+------------
+
+syntax    :NVPMLineSwap
+args      no arguments
+action    Toggles on and off both tab and status lines
 ------------------------------------------------------------------------------
 NVPMVersion                                                   *nvpm-NVPMVersion*
 -----------
@@ -718,7 +733,6 @@ will create the following project file:
         buff <buff-name> : .nvpm/proj/MyProject
         term Terminal:
 
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMLoadProject                                           *nvpm-NVPMLoadProject*
 ---------------
@@ -728,7 +742,6 @@ args      [required] only one. The project file name
 action    loads an existing project file given its name
 optional  use <tab> to iterate over existing project files
 
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMNext                                                         *nvpm-NVPMNext*
 --------
@@ -786,7 +799,6 @@ When it does!
 | [buf 1]  buf 2   buf 3   buf 4
 +-------------------------------...
 
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMPrev                                                         *nvpm-NVPMPrev*
 --------
@@ -802,7 +814,6 @@ Jump to previous buffer     :NVPMPrev buffer
 
 The rest is analogous to :NVPMNext.~
 
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMEditProjects                                         *nvpm-NVPMEditProjects*
 ----------------
@@ -821,7 +832,6 @@ This feature (together with the disabling structures functionality) is very
 useful for quick changes in the tree.
 
 see |nvpm-markup-language-disabling-structures|
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMSaveDefaultProject                             *nvpm-NVPMSaveDefaultProject*
 ----------------------
@@ -843,7 +853,6 @@ project to be loaded at startup. So equivalently:
 
   $echo "<project-name>" > .nvpm/default~
 
-see |nvpm-mappings|
 ------------------------------------------------------------------------------
 NVPMTerminal                                                 *nvpm-NVPMTerminal*
 
@@ -856,7 +865,6 @@ useful for quick operations and git operations.
 
 To go back to last buffer, just use :NVPMNext or :NVPMPrev.
 
-see |nvpm-mappings|
 ====================================}=========================================
  7. Configuration                                         *nvpm-configuration* {
 
