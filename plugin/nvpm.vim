@@ -1124,6 +1124,27 @@ endfunction
 function! DoesNotFind(x)
   return !Found(a:x)
 endfunction
+fu! s:handlehelpandman()
+  let HelpFilePath=bufname()
+  if !empty(matchstr(bufname(),'man:\/\/.*'))
+    quit
+    call g:nvpm.zoom.disable()
+    exec 'edit '. HelpFilePath
+    call g:nvpm.zoom.enable()
+  elseif &filetype == 'help'
+    bdel
+    exec 'edit '. HelpFilePath
+  endif
+endfu
+fu! s:handlequitcurrbuff()
+  if g:nvpm.data.loaded
+    if bufname() == g:nvpm.data.curr.item('b').path
+      if g:nvpm.zoom.enabled
+        call g:nvpm.zoom.disable()
+      endif
+    endif
+  endif
+endfu
 
 "}
 " Init         {
@@ -1169,7 +1190,8 @@ command! NVPMVersion      echo s:version
 " AutoCommands {
 
 if get(g:,'nvpm_zoom_aufix_terminal',1)
-  let au = 'au WinEnter '
+
+  let au  = 'au WinEnter '
   let au .= g:nvpm.zoom.lbuffer
   let au .= ','
   let au .= g:nvpm.zoom.bbuffer
@@ -1180,6 +1202,12 @@ if get(g:,'nvpm_zoom_aufix_terminal',1)
   let au .= ' '
   let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
   exec au
+
+  " See help and man without split
+  au BufWinEnter * call s:handlehelpandman()
+
+  au QuitPre * call s:handlequitcurrbuff()
+
 endif
 
 " Set project files filetype as nvpm

@@ -1122,6 +1122,7 @@ description~
   The following is the very code regarding the autocommand itself:
 
 see it in file: `plugin/nvpm.vim`
+
 if get(g:,'nvpm_zoom_aufix_terminal',1)
   let au = 'au WinEnter '
   let au .= g:nvpm.zoom.lbuffer
@@ -1134,6 +1135,12 @@ if get(g:,'nvpm_zoom_aufix_terminal',1)
   let au .= ' '
   let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
   exec au
+
+  " See help and man without split
+  au BufWinEnter * call s:handlehelpandman()
+
+  au QuitPre * call s:handlequitcurrbuff()
+
 endif
 
 ====================================}=========================================
