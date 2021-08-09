@@ -679,7 +679,18 @@ function! NVPMGITTIMER(timer) "{
   let g:nvpm.line.git = info
 endfunction
 " }
-
+function! NVPMLINEFILENAME() "{
+  let termpatt = 'term://.*'
+  if !empty(matchstr(bufname(),termpatt))
+    return 'terminal'
+  endif
+  if &filetype == 'help' && !filereadable('./'.bufname())
+    return resolve(expand("%:t"))
+  else
+    return resolve(expand("%"))
+  endif
+endfunction
+" }
 
 " edit }
 " g:nvpm.edit {
@@ -1225,7 +1236,6 @@ if get(g:,'nvpm_zoom_aufix_terminal',1)
   " See help and man without split
   au BufWinEnter * call s:handlehelpandman()
 
-  let termpatt = 'term://(.{-}//(\d+:)?)?\zs.*'
   au QuitPre * call s:handlequitcurrbuff()
 
 endif

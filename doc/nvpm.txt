@@ -28,6 +28,7 @@ CONTENTS                                                                *nvpm* {
  6. Configuration                                           nvpm-configuration
  7. Buglist                                                          nvpm-bugs
  8. AutoCommands                                             nvpm-autocommands
+ 9. Functions                                                   nvpm-functions
 ====================================}=========================================
  0. Quick Start                                             *nvpm-quick-start* {
 
@@ -60,7 +61,7 @@ CONTENTS                                                                *nvpm* {
     let g:nvpm_line_innerspace    = 0
     let g:nvpm_line_show_projname = 1
     let g:nvpm_line_bottomright   = '%y%m ⬤ %l,%c/%P'
-    let g:nvpm_line_bottomcenter  = ' ⬤ %f'
+    let g:nvpm_line_bottomcenter  = ' ⬤ %{NVPMLINEFILENAME()}'
     let g:nvpm_line_git_info      = 1
     let g:nvpm_line_git_delayms   = 5000
 
@@ -283,7 +284,7 @@ Note. The following settings are `STRONGLY RECOMMENDED` after you install NVPM:
   enough to keep track of them.
 
 ====================================}=========================================
- 4. NVPM Language                                       *nvpm-markup-language* {
+ 3. NVPM Language                                       *nvpm-markup-language* {
 
   NVPM  Markup  Language was designed in such a way to facilitate the creation
   of workspaces. Workspace means a space that you can work with/on/in.
@@ -543,7 +544,7 @@ same line of any statement.
   to get fancy about it alright?
 
 ====================================}=========================================
- 5. NVPM Usage                                                    *nvpm-usage* {
+ 4. NVPM Usage                                                    *nvpm-usage* {
 
 If  you've  reached  this  far,  I'll  assume  you  read about the NVPM Markup
 Language,  and  already  know how to place and write a project file. If that's
@@ -673,7 +674,7 @@ after that, the user should be able to see this
 Note. NVPM was written by using NVPM. So check the project files the creator
 uses to develop it!
 ====================================}=========================================
- 6. Commands                                                   *nvpm-commands* {
+ 5. Commands                                                   *nvpm-commands* {
 
 There are only those in the following list:
 
@@ -873,7 +874,7 @@ useful for quick operations and git operations.
 To go back to last buffer, just use :NVPMNext or :NVPMPrev.
 
 ====================================}=========================================
- 7. Configuration                                         *nvpm-configuration* {
+ 6. Configuration                                         *nvpm-configuration* {
 
 There are a few options the user may wanna know about. They must be set
 somewhere in the user's init.vim. Here is a list with all of them set with
@@ -976,7 +977,7 @@ Line Bottom Center                                    *g:nvpm_line_bottomcenter*
 ------------------
 
 type   : string
-default: ' ⬤ %f'
+default: ' ⬤ %{NVPMLINEFILENAME()}'
 action : Applies string to statusline. Bottom Center. Nothing shows if empty!
 description~
 
@@ -1074,7 +1075,7 @@ this completely disable the default project loading feature.
 
 see |nvpm-NVPMSaveDefaultProject|
 ====================================}=========================================
- 8. Buglist                                                        *nvpm-bugs* {
+ 7. Buglist                                                        *nvpm-bugs* {
 
 |multi-terminals-after-edit|
 
@@ -1091,7 +1092,7 @@ care of.
 
 
 ====================================}=========================================
- 9. AutoCommands                                           *nvpm-autocommands* {
+ 8. AutoCommands                                           *nvpm-autocommands* {
 
   For  the  moment,  there  is  only  one  autocommand  regarding  a fix of an
   undesirable behaviour with the zoom feature. It's really a bug, but  just  a
@@ -1142,6 +1143,17 @@ if get(g:,'nvpm_zoom_aufix_terminal',1)
   au QuitPre * call s:handlequitcurrbuff()
 
 endif
+
+====================================}=========================================
+ 9. Functions                                                 *nvpm-functions* {
+
+  For  now  there  is  only  one  user function that is used on the display of
+  filepaths, on the statusline. This  function  treats the filepaths, in which
+  it prints the word "terminal" for terminals, the  tail  of  any  help  files
+  (except  those help files in relative paths) and the equivalent of using  %f
+  in statusline  definitions,  otherwise.  To  quick  tests,  do  this:
+
+  `":set statusline=%!NVPMLINEFILENAME()"`
 
 ====================================}=========================================
 press zo to see the content, and zc to close it back. See :h zo

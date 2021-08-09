@@ -95,7 +95,7 @@ let g:nvpm_line_closure       = 0
 let g:nvpm_line_innerspace    = 0
 let g:nvpm_line_show_projname = 1
 let g:nvpm_line_bottomright   = '%y%m ⬤ %l,%c/%P'
-let g:nvpm_line_bottomcenter  = ' ⬤ %f'
+let g:nvpm_line_bottomcenter  = ' ⬤ %{NVPMLINEFILENAME()}'
 let g:nvpm_line_git_info      = 1
 let g:nvpm_line_git_delayms   = 5000
 

@@ -1,16 +1,17 @@
-v2.4.0: line doesn't redraw if previously hidden on NVPMEditProjects
-v2.3.4: housekeeping
-v2.3.3: handling quiting, help and man files in zoom mode
-v2.3.2: readme update zoom.gif
-v2.3.1: aufix for "zoom mode exit terminal" bug
-v2.3.0: unearthed zoom feature [Alpha version]
-v2.2.1: readme update new gif paths
-v2.2.0: ignore Load Defaults when argument files are passed on nvim call
-v2.1.0: handling non-loaded project file NVPMNext and NVPMPrev
-v2.0.4: new gif on readme
-v2.0.3: new version system
-v2.0.2: gittimer only upon g:nvpm.line.show()
-v2.0.1: helptags update
-v2.0.0: nvpm
-v1.0.0: vpm
-v0.0.0: vws
+          v2.5.0: user function NVPMLINEFILENAME() for the line feature
+[042fa55] v2.4.0: line doesn't redraw if previously hidden on NVPMEditProjects
+[52917e9] v2.3.4: housekeeping
+[da12c59] v2.3.3: handling quiting, help and man files in zoom mode
+[3120524] v2.3.2: readme update zoom.gif
+[8d5059a] v2.3.1: aufix for "zoom mode exit terminal" bug
+[1e4284c] v2.3.0: unearthed zoom feature [Alpha version]
+[9778d6c] v2.2.1: readme update new gif paths
+[bf3731b] v2.2.0: ignore Load Defaults when argument files are passed
+[8c4b0b4] v2.1.0: handling non-loaded project file NVPMNext and NVPMPrev
+[d8db4dc] v2.0.4: new gif on readme
+[9f914f4] v2.0.3: new version system
+[ae37f66] v2.0.2: gittimer only upon g:nvpm.line.show()
+[984aab8] v2.0.1: helptags update
+[ef54a08] v2.0.0: third plugin version. It was renamed again to "nvpm"
+[428e941] v1.0.0: secondplugin version. It was renamed to "vpm"
+[4b80afd] v0.0.0: first plugin version. It was call "vws" back then
