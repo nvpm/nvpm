@@ -2,7 +2,7 @@
 
 # seng  {
 
-workspace seng
+*workspace seng
 
   tab main
     buff case: seng/case.sng
@@ -48,7 +48,7 @@ workspace Vim-Docs
     buff windows : /usr/share/nvim/runtime/doc/windows.txt
     buff options : /usr/share/nvim/runtime/doc/options.txt
 
-  tab Main
+  *tab Main
     term Ranger : ranger /usr/share/nvim/runtime/doc
 
 #}

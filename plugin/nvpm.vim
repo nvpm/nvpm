@@ -1058,6 +1058,8 @@ function! g:nvpm.zoom.null() "{
 endfunction "}
 function! g:nvpm.zoom.swap() "{
 
+  if !g:nvpm.data.loaded|return|endif
+
   if self.enabled
     call self.disable()
   else
@@ -1158,19 +1160,18 @@ fu! s:handlehelpandman()
     else
       exec 'edit '. HelpFilePath
     endif
-  elseif &filetype == 'help'
+  elseif &filetype == 'help' && !filereadable('./'.bufname())
     bdel
     exec 'edit '. HelpFilePath
   endif
 endfu
 fu! s:handlequitcurrbuff()
-  if g:nvpm.data.loaded
-    if bufname() == g:nvpm.data.curr.item('b').path
-      if g:nvpm.zoom.enabled
-        call g:nvpm.zoom.disable()
-      endif
-    endif
-  endif
+  call g:nvpm.zoom.disable()
+  "if g:nvpm.data.loaded
+    "if bufname() == g:nvpm.data.curr.item('b').path && g:nvpm.zoom.enabled
+      "call g:nvpm.zoom.disable()
+    "endif
+  "endif
 endfu
 
 "}
@@ -1178,9 +1179,6 @@ endfu
 call g:nvpm.init()
 if get(g: ,'nvpm_load_default',1) && !argc()
   call g:nvpm.deft()
-  call g:nvpm.zoom.swap()
-  only
-  let g:nvpm.zoom.enabled = 0
 endif
 let s:version = readfile(resolve(expand("<sfile>:p:h"))."/../version")
 let s:version = len(s:version)?s:version[0]:''
