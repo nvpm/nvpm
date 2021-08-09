@@ -230,7 +230,12 @@ function! g:nvpm.data.load(file)           "{
     " Edit Current Buffer
     call self.curr.edit()
     " Show Top and Bottom Lines
-    call g:nvpm.line.show()
+
+    if g:nvpm.line.visible || !get(s:,'nvpm_data_loaded',0)
+      call g:nvpm.line.show()
+    endif
+
+    let s:nvpm_data_loaded = 1
 
   endif
   "}
@@ -699,6 +704,7 @@ function! g:nvpm.edit.proj()               "{
     call self.init()
     return
   endif
+
   " Save loaded project name  {
 
   let currpath = g:nvpm.data.path

@@ -1,0 +1,9 @@
+bug: zoom terminal exit {
+
+  start nvim session
+  call NVPMTerminal
+  call NVPMZoomSwap
+  exit from terminal
+  after that the use loses all control over the buffer navigation
+
+}
