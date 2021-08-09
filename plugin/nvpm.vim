@@ -95,7 +95,7 @@ function! g:nvpm.newp(name)                "{
   let lines += ['workspace workspace_name'  ]
   let lines += ['  tab tab_name'            ]
   let lines += ['    buff '.newdeft.':'.newdeft]
-  let lines += ['    term Terminal: ']
+  "let lines += ['    term Terminal: ']
 
   let save  = ['']
   let save += ["This is a default file. It was created automatically after :NVPMNewProject command. Its location is at ".newdeft." by default. Please call :NVPMEditProjects to start planing your own layout."]
@@ -997,9 +997,37 @@ function! g:nvpm.zoom.enable() "{
   exec 'resize ' . self.t
   silent! wincmd p
 
+  "call self.save('TabLine')
+  "call self.save('TabLineFill')
+  "call self.save('TabLineSell')
+  "call self.save('StatusLine')
+  "call self.save('StatusLineNC')
+  call self.save('LineNr')
+  call self.save('SignColumn')
+  call self.save('VertSplit')
+  call self.save('NonText')
+
   call self.highlight()
 
   let self.enabled = 1
+
+endfunction "}
+function! g:nvpm.zoom.disable() "{
+
+  "only
+
+  call self.bdel()
+  let self.enabled = 0
+
+  "call self.hset('TabLine')
+  "call self.hset('TabLineFill')
+  "call self.hset('TabLineSell')
+  "call self.hset('StatusLine')
+  "call self.hset('StatusLineNC')
+  call self.hset('LineNr')
+  call self.hset('SignColumn')
+  call self.hset('VertSplit')
+  call self.hset('NonText')
 
 endfunction "}
 function! g:nvpm.zoom.bdel() "{
@@ -1008,14 +1036,6 @@ function! g:nvpm.zoom.bdel() "{
   exec ':silent! bdel '. self.tbuffer
   exec ':silent! bdel '. self.rbuffer
 endfu " }
-function! g:nvpm.zoom.disable() "{
-
-  "only
-
-  call self.bdel()
-  let self.enabled = 0
-
-endfunction "}
 function! g:nvpm.zoom.null() "{
   return ''
 endfunction "}
@@ -1023,29 +1043,14 @@ function! g:nvpm.zoom.swap() "{
 
   if self.enabled
     call self.disable()
-    "call self.hset('TabLine')
-    "call self.hset('TabLineFill')
-    "call self.hset('TabLineSell')
-    "call self.hset('StatusLine')
-    "call self.hset('StatusLineNC')
-    call self.hset('LineNr')
-    call self.hset('SignColumn')
-    call self.hset('VertSplit')
-    call self.hset('NonText')
   else
-    "call self.save('TabLine')
-    "call self.save('TabLineFill')
-    "call self.save('TabLineSell')
-    "call self.save('StatusLine')
-    "call self.save('StatusLineNC')
-    call self.save('LineNr')
-    call self.save('SignColumn')
-    call self.save('VertSplit')
-    call self.save('NonText')
     call self.enable()
   endif
 
-  if g:nvpm.data.loaded|call g:nvpm.data.curr.edit()|endif
+  let termpatt = 'term://(.{-}//(\d+:)?)?\zs.*'
+  if !empty(matchstr(bufname(),termpatt))
+    call g:nvpm.data.curr.edit()
+  endif
 
 endfunction " }
 function! g:nvpm.zoom.rset() "{
@@ -1127,10 +1132,15 @@ endfunction
 fu! s:handlehelpandman()
   let HelpFilePath=bufname()
   if !empty(matchstr(bufname(),'man:\/\/.*'))
-    quit
-    call g:nvpm.zoom.disable()
-    exec 'edit '. HelpFilePath
-    call g:nvpm.zoom.enable()
+    close
+    let enabled = g:nvpm.zoom.enabled
+    if enabled
+      call g:nvpm.zoom.disable()
+      exec 'edit '. HelpFilePath
+      call g:nvpm.zoom.enable()
+    else
+      exec 'edit '. HelpFilePath
+    endif
   elseif &filetype == 'help'
     bdel
     exec 'edit '. HelpFilePath
@@ -1151,6 +1161,9 @@ endfu
 call g:nvpm.init()
 if get(g: ,'nvpm_load_default',1) && !argc()
   call g:nvpm.deft()
+  call g:nvpm.zoom.swap()
+  only
+  let g:nvpm.zoom.enabled = 0
 endif
 let s:version = readfile(resolve(expand("<sfile>:p:h"))."/../version")
 let s:version = len(s:version)?s:version[0]:''
@@ -1206,6 +1219,7 @@ if get(g:,'nvpm_zoom_aufix_terminal',1)
   " See help and man without split
   au BufWinEnter * call s:handlehelpandman()
 
+  let termpatt = 'term://(.{-}//(\d+:)?)?\zs.*'
   au QuitPre * call s:handlequitcurrbuff()
 
 endif
