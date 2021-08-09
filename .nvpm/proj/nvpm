@@ -1,5 +1,16 @@
 
 
+# seng  {
+
+workspace seng
+
+  tab main
+    buff case: seng/case.sng
+    buff bugs: seng/bugs.sng
+    buff idea: seng/idea.sng
+    buff save: seng/save.sng
+
+# }
 # Plugin  {
 
 workspace NVPM-Plugin 

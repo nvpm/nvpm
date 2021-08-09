@@ -1,0 +1,66 @@
+
+case mouse.node.left_click : mouse.node.left_click {
+
+actors=human,NVPM
+description {
+
+  The left click on a node is supposed to activate it. In other words, it will
+  look  in  the  tree,  update  current  buffer information and edit that very
+  buffer (put it on focus).
+
+  For  exemple,  upon  clicking on a tab, NVPM should render the change on the
+  tab and statusline, and  edit  the  last  buffer on that tab. The same would
+  apply for workspace and buffer nodes.
+
+  There  should be only one click, but multiple clicks can be permitted on the
+  condition  that the action is repeated. In the future, multiple clicks might
+  mean something else.
+
+}
+version=v1.0.0
+trigger=human
+frequency=high
+preconditions {
+
+  C1 = a project file is loaded
+
+}
+posconditions {
+
+  P1: the intended node is selected along with all its lower level nodes
+
+}
+flows         {
+
+main {
+
+  M1   : human left clicks on node
+  M2   : NVPM identifies the node level
+  M3   : NVPM retrieves the last buffer of that node level
+  M3.1 : node level is a workspace   → A1
+  M3.2 : node level is a tab         → A2
+  M3.3 : node level is a buffer/term → A3
+  M4   : NVPM updates new current nodes in the project tree
+  M5   : NVPM renders the updated information on the tab and status lines
+  M6   : NVPM finally goes to the new current buffer file (the curr.edit method)
+
+}
+alternate {
+
+  A1: NVPM identifies the last tab, and last buffer in the clicked workspace
+  A2: NVPM identifies the last buffer in the clicked tab
+  A3: NVPM identifies the clicked buffer or term
+  
+}
+exceptions {
+
+  E1: clicked node is the project file name. In this case, NVPM should perform 
+      NVPMEditProjects
+  E2: clicked region is either the bottom or top center. NVPM should 
+      call zoom.swap method
+
+}
+
+}
+
+}
