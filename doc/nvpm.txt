@@ -696,6 +696,16 @@ NVPMZoomSwap                                                 *nvpm-NVPMZoomSwap*
 syntax    :NVPMZoomSwap
 args      no arguments
 action    Toggles on and off the no-distraction mode
+
+description~
+
+This is an experimental feature (but it is robust) that implements the
+no-distraction mode, in which the current buffer is placed at the center of
+the screen.
+
+This feature is gonna be a separate plugin in the future. It still lacks many
+functions I intend to implement when I place it in a separate plugin. Just
+wait for it.
 ------------------------------------------------------------------------------
 NVPMLineSwap                                                 *nvpm-NVPMLineSwap*
 ------------
@@ -707,14 +717,14 @@ action    Toggles on and off both tab and status lines
 NVPMVersion                                                   *nvpm-NVPMVersion*
 -----------
 
-syntax    :NVPMNewProject~
+syntax    :NVPMVersion
 args      no arguments
 action    echoes the version number for nvpm
 ------------------------------------------------------------------------------
 NVPMNewProject                                             *nvpm-NVPMNewProject*
 --------------
 
-syntax    :NVPMNewProject <project-name>~
+syntax    :NVPMNewProject <project-name>
 args      [required] only one. The new project file name
 action    creates a new project file given its name
 optional  use <tab> to iterate over existing project files
@@ -745,7 +755,7 @@ will create the following project file:
 NVPMLoadProject                                           *nvpm-NVPMLoadProject*
 ---------------
 
-syntax    :NVPMLoadProject <project-name>~
+syntax    :NVPMLoadProject <project-name>
 args      [required] only one. The project file name
 action    loads an existing project file given its name
 optional  use <tab> to iterate over existing project files
@@ -754,7 +764,7 @@ optional  use <tab> to iterate over existing project files
 NVPMNext                                                         *nvpm-NVPMNext*
 --------
 
-syntax    :NVPMNext <element>~
+syntax    :NVPMNext <element>
 args      [required] one between "workspace", "tab" or "buffer"
 action    jumps to next element in the tree
 optional  use <tab> to iterate over possible elements
@@ -765,14 +775,16 @@ Jump to next buffer     :NVPMNext buffer
 
 Cycles back to first element
 ----------------------------
-When the user reaches the last element, by performing the command will bring
-the user back to the first element of same hierarchy.
+
+  When  the  user  reaches  the last element, by performing the command again,
+  NVPM will bring the user back to the first element of same hierarchy.
 
 counts~
-This command accepts counts. In other words, by typing a number before
-performing the command with a key mapping, NVPM will use this number as the
-number of steps to walk the tree. If the used <space> for next buffer, then
-the following actions will jump two buffers at once.
+
+  This  command  accepts  counts.  In  other  words, by typing a number before
+  performing the command with a key mapping, NVPM  will use this number as the
+  number of steps to walk the tree. If the used <space>  for next buffer, then
+  the following actions will jump two buffers at once.
 
 2<space>
 
@@ -811,7 +823,7 @@ When it does!
 NVPMPrev                                                         *nvpm-NVPMPrev*
 --------
 
-syntax    :NVPMPrev <element>~
+syntax    :NVPMPrev <element>
 args      [required] one between "workspace", "tab" or "buffer"
 action    jumps to previous element in the tree
 optional  use <tab> to iterate over possible elements
@@ -826,52 +838,58 @@ The rest is analogous to :NVPMNext.~
 NVPMEditProjects                                         *nvpm-NVPMEditProjects*
 ----------------
 
-syntax    :NVPMEditProjects~
-args      [zero]
+syntax    :NVPMEditProjects
+args      none
 action    Enters Edit Projects mode
 toggle    run again to go back to previously loaded project
-description~
-Creates the "NVPM Edit Projects" workspace which can be navigated just like a
-normal workspace by using the same keyboard mappings defined by the user.
 
-After the user is done editing projects, the command can be run again to go
-back to previously loaded project. All changes will be applied accordingly.
-This feature (together with the disabling structures functionality) is very
-useful for quick changes in the tree.
+description~
+
+  Creates  the "NVPM Edit Projects" workspace which can be navigated just like
+  a normal workspace by using the same keyboard mappings defined by the user.
+
+  After  the user is done editing projects, the command can be run again to go
+  back  to  the  previously  loaded  project.  All  changes  will  be  applied
+  accordingly.   This   feature   (together   with  the  disabling  structures
+  functionality) is very useful for quick changes in the tree.
 
 see |nvpm-markup-language-disabling-structures|
 ------------------------------------------------------------------------------
 NVPMSaveDefaultProject                             *nvpm-NVPMSaveDefaultProject*
 ----------------------
 
-syntax    :NVPMSaveDefaultProject [<project-name>]~
+syntax    :NVPMSaveDefaultProject [<project-name>]
 args      [optional] zero or one
 action    Saves a default project for autoload (NVPM's, not Neovim's)
 optional  use <tab> to iterate over existing project files
+
 description~
-1) Zero arguments : Saves the currently loaded project as default
-2) One  argument  : Saves the argument as default project if it matches a
-existing one
 
-When entering the project's root folder, NVPM will look for a default project.
-If it finds it, NVPM will load it at start.
+  1) Zero arguments: Saves the currently loaded project as default
+  2) One argument  : Saves  the argument as default project if it matches a
+  existing one
 
-This command saves a file (.nvpm/default) storing the name of the default
-project to be loaded at startup. So equivalently:
+  When  starting a Neovim session in the project's root folder, NVPM will look
+  for a default project. If it finds it, NVPM will load it at start up.
+
+  This  command  saves  a file (.nvpm/default) storing the name of the default
+  project to be loaded at startup. So equivalently:
 
   $echo "<project-name>" > .nvpm/default~
 
 ------------------------------------------------------------------------------
 NVPMTerminal                                                 *nvpm-NVPMTerminal*
 
-syntax    :NVPMTerminal~
+syntax    :NVPMTerminal
 args      [zero]
 action    Opens a terminal that can be acessed from anywhere.
-description~
-This is a separate terminal. Different from any user defined terminal. Very
-useful for quick operations and git operations.
 
-To go back to last buffer, just use :NVPMNext or :NVPMPrev.
+description~
+
+  This  is a separate terminal. Different from any user defined terminal. Very
+  useful for quick operations and git operations.
+
+  To go back to last buffer, just use :NVPMNext or :NVPMPrev.
 
 ====================================}=========================================
  6. Configuration                                         *nvpm-configuration* {
