@@ -1,4 +1,5 @@
-v2.5.2: housekeeping operations in the doc/nvpm.txt
+v2.6.0: removed zoom from nvpm plugin
+[395b38d] v2.5.2: housekeeping operations in the doc/nvpm.txt
 [19c506f] v2.5.1: quick fixes on the autocommands helper functions
 [bbc93cc] v2.5.0: user function NVPMLINEFILENAME() for the line feature
 [042fa55] v2.4.0: line doesn't redraw if previously hidden on NVPMEditProjects

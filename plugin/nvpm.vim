@@ -13,7 +13,6 @@ let g:nvpm.edit = {}
 let g:nvpm.patt = {}
 let g:nvpm.line = {}
 let g:nvpm.dirs = {}
-let g:nvpm.zoom = {}
 let g:nvpm.term = {}
 let g:nvpm.data = {}
 let g:nvpm.data.make = {}
@@ -33,7 +32,6 @@ function! g:nvpm.init()                    "{
   call self.temp.init()
   call self.edit.init()
   call self.term.init()
-  call self.zoom.init()
 
   let self.nvpm_new_project_edit_mode = get(g:,'nvpm_new_project_edit_mode',0)
   let self.nvpm_load_new_project      = get(g:,'nvpm_load_new_project',1)
@@ -945,177 +943,6 @@ endfunction
 "}
 
 " }
-" g:nvpm.zoom {
-
-function! g:nvpm.zoom.init() "{
-
-  let self.enabled = 0
-  let self.height  = 20
-  let self.width   = 80
-  let self.l       = 15
-  let self.r       = 0
-  let self.t       = 1
-  let self.b       = 4
-
-  let self.lbuffer = '/tmp/__NVPM__ZOOM__L__'
-  let self.bbuffer = '/tmp/__NVPM__ZOOM__B__'
-  let self.tbuffer = '/tmp/__NVPM__ZOOM__T__'
-  let self.rbuffer = '/tmp/__NVPM__ZOOM__R__'
-
-  let self.groups = {}
-
-  "let self.height = self.height >= 20 ? 20 : self.height
-  "let self.width  = self.width  >= 80 ? 80 : self.width
-
-endfunction " }
-function! g:nvpm.zoom.highlight() "{
-
-  hi TabLine      ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
-  hi TabLineFill  ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
-  hi TabLineSell  ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
-  hi StatusLine   ctermfg=none ctermbg=none guifg=none guibg=bg gui=none
-  hi StatusLineNC ctermfg=none ctermbg=none guifg=bg   guibg=bg gui=none
-  hi LineNr       ctermfg=none ctermbg=none guibg=bg   gui=none
-  hi SignColumn   ctermfg=none ctermbg=none guibg=bg                  gui=none
-  hi VertSplit    ctermfg=none ctermbg=none guifg=bg guibg=bg         gui=none
-  hi NonText      ctermfg=none ctermbg=none guifg=bg                  gui=none
-
-  "hi TagbarHighlight guibg='#4c4c4c' gui=none
-  "hi Search guibg='#5c5c5c' guifg='#000000' gui=bold
-
-endfunction " }
-function! g:nvpm.zoom.enable() "{
-
-  exec 'silent! top split '. g:nvpm.zoom.tbuffer
-  let &l:statusline='%{g:nvpm.zoom.null()}'
-  silent! wincmd p
-
-  exec 'silent! bot split '. g:nvpm.zoom.bbuffer
-  let &l:statusline='%{g:nvpm.zoom.null()}'
-  silent! wincmd p
-
-  exec 'silent! vsplit'. g:nvpm.zoom.lbuffer
-  let &l:statusline='%{g:nvpm.zoom.null()}'
-  silent! wincmd p
-
-  exec 'silent! rightbelow vsplit '. g:nvpm.zoom.rbuffer
-  let &l:statusline='%{g:nvpm.zoom.null()}'
-  silent! wincmd p
-
-  silent! wincmd h
-  exec 'vertical resize ' . self.l
-  silent! wincmd p
-  silent! wincmd j
-  exec 'resize ' . self.b
-  silent! wincmd p
-  exec 'resize          ' . self.height
-  exec 'vertical resize ' . self.width
-  silent! wincmd k
-  exec 'resize ' . self.t
-  silent! wincmd p
-
-  "call self.save('TabLine')
-  "call self.save('TabLineFill')
-  "call self.save('TabLineSell')
-  "call self.save('StatusLine')
-  "call self.save('StatusLineNC')
-  call self.save('LineNr')
-  call self.save('SignColumn')
-  call self.save('VertSplit')
-  call self.save('NonText')
-
-  call self.highlight()
-
-  let self.enabled = 1
-
-endfunction "}
-function! g:nvpm.zoom.disable() "{
-
-  "only
-
-  call self.bdel()
-  let self.enabled = 0
-
-  "call self.hset('TabLine')
-  "call self.hset('TabLineFill')
-  "call self.hset('TabLineSell')
-  "call self.hset('StatusLine')
-  "call self.hset('StatusLineNC')
-  call self.hset('LineNr')
-  call self.hset('SignColumn')
-  call self.hset('VertSplit')
-  call self.hset('NonText')
-
-endfunction "}
-function! g:nvpm.zoom.bdel() "{
-  exec ':silent! bdel '. self.lbuffer
-  exec ':silent! bdel '. self.bbuffer
-  exec ':silent! bdel '. self.tbuffer
-  exec ':silent! bdel '. self.rbuffer
-endfu " }
-function! g:nvpm.zoom.null() "{
-  return ''
-endfunction "}
-function! g:nvpm.zoom.swap() "{
-
-  if !g:nvpm.data.loaded|return|endif
-
-  if self.enabled
-    call self.disable()
-  else
-    call self.enable()
-  endif
-
-  let termpatt = 'term://(.{-}//(\d+:)?)?\zs.*'
-  if !empty(matchstr(bufname(),termpatt))
-    call g:nvpm.data.curr.edit()
-  endif
-
-endfunction " }
-function! g:nvpm.zoom.rset() "{
-
-  let self.enabled = 0
-  call self.bdel()
-  call self.swap()
-
-endfunction " }
-
-fu! g:nvpm.zoom.save(group)
-
-  let output = execute('hi '.a:group)
-
-  let self.groups[a:group] = {}
-
-  let items  = []
-  let items += ['cterm']
-  let items += ['start']
-  let items += ['stop']
-  let items += ['ctermfg']
-  let items += ['ctermbg']
-  let items += ['gui']
-  let items += ['guifg']
-  let items += ['guibg']
-  let items += ['guisp']
-  let items += ['blend']
-
-  for item in items
-    let self.groups[a:group][item] = matchstr(output , item.'=\zs\S*')
-  endfor
-
-endfu
-fu! g:nvpm.zoom.hset(group)
-  let input = ''
-  for item in keys(self.groups[a:group])
-    if !empty(self.groups[a:group][item])
-      let input .= item.'='.self.groups[a:group][item].' '
-    endif
-  endfor
-  "execute 'hi clear '.a:group
-  execute 'hi '.a:group.' '.input
-endfu
-
-
-" }
 
 " func}
 " Helpers      {
@@ -1148,31 +975,6 @@ endfunction
 function! DoesNotFind(x)
   return !Found(a:x)
 endfunction
-fu! s:handlehelpandman()
-  let HelpFilePath=bufname()
-  if !empty(matchstr(bufname(),'man:\/\/.*'))
-    close
-    let enabled = g:nvpm.zoom.enabled
-    if enabled
-      call g:nvpm.zoom.disable()
-      exec 'edit '. HelpFilePath
-      call g:nvpm.zoom.enable()
-    else
-      exec 'edit '. HelpFilePath
-    endif
-  elseif &filetype == 'help' && !filereadable('./'.bufname())
-    bdel
-    exec 'edit '. HelpFilePath
-  endif
-endfu
-fu! s:handlequitcurrbuff()
-  call g:nvpm.zoom.disable()
-  "if g:nvpm.data.loaded
-    "if bufname() == g:nvpm.data.curr.item('b').path && g:nvpm.zoom.enabled
-      "call g:nvpm.zoom.disable()
-    "endif
-  "endif
-endfu
 
 "}
 " Init         {
@@ -1211,32 +1013,10 @@ command! -count -complete=custom,NVPMNextPrev -nargs=1 NVPMPrev call g:nvpm.loop
 command! NVPMTerminal     call g:nvpm.term.edit()
 command! NVPMEditProjects call g:nvpm.edit.proj()
 command! NVPMLineSwap     call g:nvpm.line.swap()
-command! NVPMZoomSwap     call g:nvpm.zoom.swap()
 command! NVPMVersion      echo s:version
 
 " }
 " AutoCommands {
-
-if get(g:,'nvpm_zoom_aufix_terminal',1)
-
-  let au  = 'au WinEnter '
-  let au .= g:nvpm.zoom.lbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.bbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.tbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.rbuffer
-  let au .= ' '
-  let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
-  exec au
-
-  " See help and man without split
-  au BufWinEnter * call s:handlehelpandman()
-
-  au QuitPre * call s:handlequitcurrbuff()
-
-endif
 
 " Set project files filetype as nvpm
 "execute 'au BufEnter *'. g:nvpm.dirs.path("proj") .'* set ft=nvpm'

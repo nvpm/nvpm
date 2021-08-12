@@ -28,15 +28,6 @@ And here is a test run in a real project.
 </p>
 </figure>
 
-And here is a quick demonstration of its `"distraction-free"` feature.
-
-<figure>
-<p  align=center>
-  <img width=85% height=85% 
-  src="https://gitlab.com/nvpm/home/home/-/raw/main/zoom.gif"/>
-</p>
-</figure>
-
 # Installation
 
 ## Using `vim-plug`
@@ -77,11 +68,6 @@ set termguicolors
 set hidden
 set showtabline=2
 set laststatus=2
-
-" fix zoom terminal exit.
-" See :help nvpm-autocommands
-" See :help g:nvpm_zoom_aufix_terminal
-"let g:nvpm_zoom_aufix_terminal = 1
 
 " Project options
 let g:nvpm_new_project_edit_mode = 1
@@ -132,8 +118,6 @@ nmap <F9>             :NVPMSaveDefaultProject<space>
 nmap <F10>            :NVPMNewProject<space>
 nmap mt               :NVPMTerminal<cr>
 nmap ml               :NVPMLineSwap<cr>
-nmap <silent>mz       :NVPMZoomSwap<cr>
-nmap <silent><F11>    :NVPMZoomSwap<cr>
 ```
 
 These mappings will translate into:

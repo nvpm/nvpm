@@ -27,8 +27,7 @@ CONTENTS                                                                *nvpm* {
  5. Commands                                                     nvpm-commands
  6. Configuration                                           nvpm-configuration
  7. Buglist                                                          nvpm-bugs
- 8. AutoCommands                                             nvpm-autocommands
- 9. Functions                                                   nvpm-functions
+ 8. Functions                                                   nvpm-functions
 ====================================}=========================================
  0. Quick Start                                             *nvpm-quick-start* {
 
@@ -43,11 +42,6 @@ CONTENTS                                                                *nvpm* {
     set hidden
     set showtabline=2
     set laststatus=2
-
-    " fix zoom terminal exit.
-    " See :help nvpm-autocommands
-    " See :help g:nvpm_zoom_aufix_terminal
-    "let g:nvpm_zoom_aufix_terminal = 1
 
     " Project options
     let g:nvpm_new_project_edit_mode = 1
@@ -98,8 +92,6 @@ CONTENTS                                                                *nvpm* {
     nmap <F10>            :NVPMNewProject<space>
     nmap mt               :NVPMTerminal<cr>
     nmap ml               :NVPMLineSwap<cr>
-    nmap <silent>mz       :NVPMZoomSwap<cr>
-    nmap <silent><F11>    :NVPMZoomSwap<cr>
 
 --- UNTIL HERE
 
@@ -687,25 +679,7 @@ NVPMSaveDefaultProject
 NVPMTerminal
 NVPMVersion
 NVPMLineSwap
-NVPMZoomSwap
 
-------------------------------------------------------------------------------
-NVPMZoomSwap                                                 *nvpm-NVPMZoomSwap*
-------------
-
-syntax    :NVPMZoomSwap
-args      no arguments
-action    Toggles on and off the no-distraction mode
-
-description~
-
-This is an experimental feature (but it is robust) that implements the
-no-distraction mode, in which the current buffer is placed at the center of
-the screen.
-
-This feature is gonna be a separate plugin in the future. It still lacks many
-functions I intend to implement when I place it in a separate plugin. Just
-wait for it.
 ------------------------------------------------------------------------------
 NVPMLineSwap                                                 *nvpm-NVPMLineSwap*
 ------------
@@ -1110,60 +1084,7 @@ care of.
 
 
 ====================================}=========================================
- 8. AutoCommands                                           *nvpm-autocommands* {
-
-  For  the  moment,  there  is  only  one  autocommand  regarding  a fix of an
-  undesirable behaviour with the zoom feature. It's really a bug, but  just  a
-  side effect of opening a terminal buffer, either with a :terminal or with
-  :NVPMTerminal,  when  using  the Zoom feature (:NVPMZoomSwap). After exiting
-  the  terminal,  the  last  buffers   gets  unfocused,  and  only  performing
-  :NVPMZoomSwap twice would do the trick  of  going back to the last buffer in
-  zoom mode.
-
-  The  following is a controller variable of this autocommand for a `WinEnter`
-  event:
-
-------------------------------------------------------------------------------
-AutoCommand Fix Zoom Mode Terminal Exit             *g:nvpm_zoom_aufix_terminal*
----------------------------------------
-
-status : experimental
-type   : boolean
-default: 1
-range  : 0 or 1
-action : Controls the creation of the autocommand described above
-description~
-  Autocommands  may become unpredictable depending on what the user may define
-  in their own autocommands.  If  that's  your case, you may wanna toggle this
-  variable for debugging. For now I can only  promise  to  make this robust in
-  the future.
-
-  The following is the very code regarding the autocommand itself:
-
-see it in file: `plugin/nvpm.vim`
-
-if get(g:,'nvpm_zoom_aufix_terminal',1)
-  let au = 'au WinEnter '
-  let au .= g:nvpm.zoom.lbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.bbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.tbuffer
-  let au .= ','
-  let au .= g:nvpm.zoom.rbuffer
-  let au .= ' '
-  let au .= 'if g:nvpm.zoom.enabled|call g:nvpm.zoom.rset()|endif'
-  exec au
-
-  " See help and man without split
-  au BufWinEnter * call s:handlehelpandman()
-
-  au QuitPre * call s:handlequitcurrbuff()
-
-endif
-
-====================================}=========================================
- 9. Functions                                                 *nvpm-functions* {
+ 8. Functions                                                 *nvpm-functions* {
 
   For  now  there  is  only  one  user function that is used on the display of
   filepaths, on the statusline. This  function  treats the filepaths, in which
@@ -1174,31 +1095,7 @@ endif
   `":set statusline=%!NVPMLINEFILENAME()"`
 
 ====================================}=========================================
-press zo to see the content, and zc to close it back. See :h zo
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  PRESS `zo` TO SEE THE CONTENT, AND `zc` TO CLOSE IT BACK. SEE `:h zo`
 
 vim: ft=help tw=78 isk+=<,>,\:,-,' fdm=marker fmr={,} fdl=0 fen
