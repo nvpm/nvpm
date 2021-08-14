@@ -15,7 +15,7 @@ at `:help nvpm`. Enjoy.
 
 <figure>
 <p  align=center>
-  <img src="https://gitlab.com/nvpm/home/home/-/raw/main/nvpm.gif"/>
+  <img src="https://gitlab.com/nvpm/home/-/raw/main/nvpm.gif"/>
 </p>
 </figure>
 
@@ -24,7 +24,7 @@ And here is a test run in a real project.
 <figure>
 <p  align=center>
   <img width=85% height=85%
-  src="https://gitlab.com/nvpm/home/home/-/raw/main/nvpm-usage.gif"/>
+  src="https://gitlab.com/nvpm/home/-/raw/main/nvpm-usage.gif"/>
 </p>
 </figure>
 
