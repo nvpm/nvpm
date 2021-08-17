@@ -1,9 +1,9 @@
 
 # New Version Warning
 
-The  NVPM  projects  are going through a hard reset in its code paradigm and
+The NVPM  projects are going through a hard reset in their code paradigm and
 the organizational structure. The code is being ported to an Object Oriented
-paradigm, which will allow  me  to  solve  problems more effiently. However,
+paradigm, which will allow  me to solve  problems more efficiently. However,
 although this does not affect the end-user,  the  plug-in structure is being
 changed a bit.
 
