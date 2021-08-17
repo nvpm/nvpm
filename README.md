@@ -19,13 +19,13 @@ project's file structure. For this, proj  will  use the data structure built
 by `flux`, as mentioned above.
 
 3. `line`: will be resposible for constructing the tab and status lines with
-many  more  features,  including  a  new syntax that's being developed as we
-speak. You see, there are many plug-ins  of  the  sort out there, and all of
-them seem to require the user to learn how to manipulate VimL data structure
-such  as  list  and  dictionaries. I'm sure that's the  best  solution  when
-performance is concerned,  but  it's  done at the peril of begginer users. I
-intend to attend both persons. This new  syntax  is  gonna be treated by the
-`flux` plug-in as well.
+many  more  features,  including  a new syntax that's being developed as we
+speak. You see, there are many plug-ins  of  the sort out there, and all of
+them  seem  to  require  the  user  learn  how  to  manipulate   VimL  data
+structures  such  as  lists  and  dictionaries.  I'm  sure  that's the best
+solution when performance is concerned, but it's done at the  peril  of the
+begginers.  I  intend  to  attend both persons. This new syntax is gonna be
+treated by the `flux` plug-in as well.
 
 The  `zoom`  plug-in already undergone these changes and it's no longer part
 of the current  (and  frozen)  nvpm. The same will happen with it's parsing,
