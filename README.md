@@ -1,66 +1,66 @@
 
 # New Version Warning
 
-  The  NVPM  projects  are going through a hard reset in its code paradigm and
-  the organizational structure. The code is being ported to an Object Oriented
-  paradigm, which will allow  me  to  solve  problems more effiently. However,
-  although this does not affect the end-user,  the  plug-in structure is being
-  changed a bit.
+The  NVPM  projects  are going through a hard reset in its code paradigm and
+the organizational structure. The code is being ported to an Object Oriented
+paradigm, which will allow  me  to  solve  problems more effiently. However,
+although this does not affect the end-user,  the  plug-in structure is being
+changed a bit.
 
-  The  plug-in  now  called  nvpm (this plug-in, the frozen one) will be split
-  into at least 3 other plug-ins. They are:
+The  plug-in  now  called  nvpm (this plug-in, the frozen one) will be split
+into at least 3 other plug-ins. They are:
 
-  1. `flux`: plug-in will be in charge of parsing the project file syntax into
-  a data structure usable by the next plug-ins
+1. `flux`: plug-in will be in charge of parsing the project file syntax into
+a data structure usable by the next plug-ins
 
-  2. `proj`: will be in  charge with the project management itself. It's gonna
-  perform  all  navigation  and  even  some new housekeeping operations in the
-  project's file structure. For this, proj  will  use the data structure built
-  by `flux`, as mentioned above.
+2. `proj`: will be in  charge with the project management itself. It's gonna
+perform  all  navigation  and  even  some new housekeeping operations in the
+project's file structure. For this, proj  will  use the data structure built
+by `flux`, as mentioned above.
 
-  3. `line`: will be resposible for constructing the tab and status lines with
-  many  more  features,  including  a  new syntax that's being developed as we
-  speak. You see, there are many plug-ins  of  the  sort out there, and all of
-  them seem to require the user to learn how to manipulate VimL data structure
-  such  as  list  and  dictionaries. I'm sure that's the  best  solution  when
-  performance is concerned,  but  it's  done at the peril of begginer users. I
-  intend to attend both persons. This new  syntax  is  gonna be treated by the
-  `flux` plug-in as well.
+3. `line`: will be resposible for constructing the tab and status lines with
+many  more  features,  including  a  new syntax that's being developed as we
+speak. You see, there are many plug-ins  of  the  sort out there, and all of
+them seem to require the user to learn how to manipulate VimL data structure
+such  as  list  and  dictionaries. I'm sure that's the  best  solution  when
+performance is concerned,  but  it's  done at the peril of begginer users. I
+intend to attend both persons. This new  syntax  is  gonna be treated by the
+`flux` plug-in as well.
 
-  The  `zoom`  plug-in already undergone these changes and it's no longer part
-  of the current  (and  frozen)  nvpm. The same will happen with it's parsing,
-  navigation and management, and the  lines  drawing,  which  is now all being
-  done by nvpm alone. This is starting to get in my nerves, hence  the change.
+The  `zoom`  plug-in already undergone these changes and it's no longer part
+of the current  (and  frozen)  nvpm. The same will happen with it's parsing,
+navigation and management, and the  lines  drawing,  which  is now all being
+done by nvpm alone. This is starting to get in my nerves, hence  the change.
 
-  For those who still want to use the current (and frozen) version can install
-  it  using  the  git  tag  `frozen`.  Using vim-plug is recommended for this,
-  because you can explicitly specify that by the following:
+For those who still want to use the current (and frozen) version can install
+it  using  the  git  tag  `frozen`.  Using vim-plug is recommended for this,
+because you can explicitly specify that by the following:
 
-    Plug 'https://gitlab.com/nvpm/nvpm' , {'tag' : 'frozen'}
+  Plug 'https://gitlab.com/nvpm/nvpm' , {'tag' : 'frozen'}
 
-  Note, only upon reinstalling the plug-in will work. If you update it, it
-  won't work.
+Note, only upon reinstalling the plug-in will work. If you update it, it
+won't work.
 
-  Users  must  do this, because I also intend to use the repository nvpm (this
-  repository) as  a  pack  of  all plug-ins together. This will be perfect for
-  those users (myself included!) who just want to use all my plug-ins, without
-  having to go through the trouble  of  installing  each  and everyone of them
-  separately. So in the near future, those users will just  have  to  do  this
+Users  must  do this, because I also intend to use the repository nvpm (this
+repository) as  a  pack  of  all plug-ins together. This will be perfect for
+those users (myself included!) who just want to use all my plug-ins, without
+having to go through the trouble  of  installing  each  and everyone of them
+separately. So in the near future, those users will just  have  to  do  this
 
-    Plug 'https://gitlab.com/nvpm/nvpm' , {'branch' : 'main'}
+  Plug 'https://gitlab.com/nvpm/nvpm' , {'branch' : 'main'}
 
-  and have all of them will be installed. Easy hum?
+and have all of them will be installed. Easy hum?
 
-  Although  this  helps,  some  users  may  be concerned with unused memory by
-  having all plugins installed, and not using  some of them all the time. This
-  scenario  will never happen, because all plug-ins  are  now  making  use  of
-  Vim/Neovim  buil-in feature of automatic loading. In other words, nearly all
-  variables and functions will be loaded (occupy RAM memory) upon demand only,
-  except some that will be necessary to construct the command interfacing with
-  the user (the commands themselves). Note, the current frozen nvpm plug-in is
-  not making using of this awesome feature!
+Although  this  helps,  some  users  may  be concerned with unused memory by
+having all plugins installed, and not using  some of them all the time. This
+scenario  will never happen, because all plug-ins  are  now  making  use  of
+Vim/Neovim  buil-in feature of automatic loading. In other words, nearly all
+variables and functions will be loaded (occupy RAM memory) upon demand only,
+except some that will be necessary to construct the command interfacing with
+the user (the commands themselves). Note, the current frozen nvpm plug-in is
+not making using of this awesome feature!
 
-  I appreciate your understanding.
+I appreciate your understanding.
 
 # Introduction
 
