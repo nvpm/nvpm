@@ -25,6 +25,7 @@ nvpm-bugs	nvpm.txt	/*nvpm-bugs*
 nvpm-commands	nvpm.txt	/*nvpm-commands*
 nvpm-configuration	nvpm.txt	/*nvpm-configuration*
 nvpm-functions	nvpm.txt	/*nvpm-functions*
+nvpm-future	nvpm.txt	/*nvpm-future*
 nvpm-group	nvpm.txt	/*nvpm-group*
 nvpm-installation	nvpm.txt	/*nvpm-installation*
 nvpm-intro	nvpm.txt	/*nvpm-intro*
