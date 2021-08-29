@@ -1,5 +1,6 @@
 
 <details>
+
 <summary>New Version Warning</summary>
 
 The NVPM  projects are going through a hard reset in their code paradigm and
