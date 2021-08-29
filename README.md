@@ -1,5 +1,6 @@
 
-# New Version Warning
+<details>
+<summary># New Version Warning</summary>
 
 The NVPM  projects are going through a hard reset in their code paradigm and
 the organizational structure. The code is being ported to an Object Oriented
@@ -62,6 +63,7 @@ not making using of this awesome feature!
 
 I appreciate your understanding.
 
+</details>
 # Introduction
 
 NVPM  stands  for Neovim Project Manager. It's mission is to assist the user
